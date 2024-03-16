@@ -1,0 +1,19 @@
+---
+import UserForm from '../../components/UserForm.svelte';
+import Main from '@src/layouts/Main.astro';
+if (Astro.request.method === 'POST') {
+	try {
+		const data = await Astro.request.formData();
+		const vehicule = data.get('vehicule');
+		console.log(vehicule);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		}
+	}
+}
+---
+
+<Main title="Welcome to Astro.">
+	<UserForm client:load />
+</Main>

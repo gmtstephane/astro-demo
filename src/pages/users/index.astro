@@ -1,0 +1,29 @@
+---
+import { InsertUser } from '@db/queries/users';
+if (Astro.request.method === 'POST') {
+	try {
+		const data = await Astro.request.formData();
+		const name = data.get('username')?.toString();
+		if (!name) {
+			throw new Error('Name is required');
+		}
+		const newuser = await InsertUser({
+			name,
+			role: 'customer',
+		});
+		console.log(newuser);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		}
+	}
+}
+---
+
+<main>
+	<form method="POST">
+		<label for="username">Name</label>
+		<input type="text" name="username" id="username" required />
+		<button type="submit">Create</button>
+	</form>
+</main>
