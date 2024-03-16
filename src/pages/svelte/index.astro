@@ -1,11 +1,20 @@
 ---
-import UserForm from '../../components/UserForm.svelte';
+import { db } from '@db/config';
+import SelectSport from '@src/components/forms/select/Sport.svelte';
+import SelectChampionship from '@src/components/forms/select/Championship.svelte';
+import NewEvent from '@src/components/forms/NewEvent.svelte';
 import Main from '@src/layouts/Main.astro';
+import '@src/styles/global.css';
+
+const sports = await db.query.sport.findMany({});
+const championships = await db.query.championship.findMany({});
+const teams = await db.query.team.findMany({ with: { teamToChampionships: true } });
+const locations = await db.query.location.findMany({});
+
 if (Astro.request.method === 'POST') {
 	try {
 		const data = await Astro.request.formData();
-		const vehicule = data.get('vehicule');
-		console.log(vehicule);
+		console.log(data);
 	} catch (error) {
 		if (error instanceof Error) {
 			console.error(error.message);
@@ -15,5 +24,5 @@ if (Astro.request.method === 'POST') {
 ---
 
 <Main title="Welcome to Astro.">
-	<UserForm client:load />
+	<NewEvent client:load {sports} {championships} {teams} {locations} />
 </Main>
