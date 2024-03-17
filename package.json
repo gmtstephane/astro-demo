@@ -3,7 +3,7 @@
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "NODE_TLS_REJECT_UNAUTHORIZED='0' astro dev",
 		"start": "astro dev",
 		"generate": "drizzle-kit generate:pg",
 		"push": "npx tsx --env-file=.env db/index.ts",

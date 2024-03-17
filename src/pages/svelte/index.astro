@@ -1,7 +1,5 @@
 ---
 import { db } from '@db/config';
-import SelectSport from '@src/components/forms/select/Sport.svelte';
-import SelectChampionship from '@src/components/forms/select/Championship.svelte';
 import NewEvent from '@src/components/forms/NewEvent.svelte';
 import Main from '@src/layouts/Main.astro';
 import '@src/styles/global.css';
@@ -23,6 +21,6 @@ if (Astro.request.method === 'POST') {
 }
 ---
 
-<Main title="Welcome to Astro.">
+<Main title="Nouvelle Equipe">
 	<NewEvent client:load {sports} {championships} {teams} {locations} />
 </Main>

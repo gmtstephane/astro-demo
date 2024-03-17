@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ChampionshipType, LocationType, SportType, TeamType, TeamWithChampionshipsType } from '@db/queries/sports';
 	import Sport from './select/Sport.svelte';
-	import Championiship from './select/Championship.svelte';
+	import Championship from './select/Championship.svelte';
 	import Team from './select/Team.svelte';
 	import Location from './select/Location.svelte';
 	import DateSelect from './select/Date.svelte';
@@ -25,7 +25,7 @@
 <form class="flex flex-col space-y-4">
 	<Sport bind:value={sport} {sports} />
 	{#key sport}
-		<Championiship bind:value={championship} selectedSport={sport} {championships} />
+		<Championship bind:value={championship} selectedSport={sport} {championships} />
 	{/key}
 	{#key championship}
 		<Team name="homeTeam" label={'Equipe domicile'} bind:value={homeTeam} {championship} {teams} />
