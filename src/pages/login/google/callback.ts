@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { AuthorizationCode, type AccessToken, type Token } from 'simple-oauth2';
-import { GoogleConfig } from '.';
+import { AppUrl, GoogleConfig, GoogleUrl } from '.';
 import { db } from '@db/config';
 import { user } from '@db/schema';
 import { eq, and } from 'drizzle-orm';
@@ -62,9 +62,8 @@ export const GET: APIRoute = async ({ request }) => {
 async function GetToken(code: string): Promise<AccessToken> {
 	const oauth2 = new AuthorizationCode(GoogleConfig);
 	return await oauth2.getToken({
+		...GoogleUrl,
 		code,
-		redirect_uri: 'http://localhost:4321/login/google/callback',
-		scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
 	});
 }
 
