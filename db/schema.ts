@@ -168,3 +168,21 @@ export const ticketsRelation = relations(ticket, ({ one }) => ({
 		references: [eventTeam.id],
 	}),
 }));
+
+export const ProviderEnum = pgEnum('provider', ['Google']);
+export const UserTypeEnum = pgEnum('userType', ['Customer', 'Admin']);
+
+export const user = pgTable('user_account', {
+	id: serial('id').primaryKey(),
+	providerId: text('provider_id').notNull(),
+	provider: ProviderEnum('provider').notNull(),
+	userType: UserTypeEnum('userType').notNull().default('Customer'),
+	email: text('email').notNull().unique(),
+	name: text('name').notNull(),
+	givenName: text('given_name').notNull(),
+	familyName: text('family_name').notNull(),
+	picture: text('picture').notNull(),
+	locale: text('locale').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at'),
+});

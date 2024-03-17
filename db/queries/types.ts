@@ -1,4 +1,4 @@
-import { championship, eventTeam, location, sport, team, teamToChampionships, ticket, ticketing } from '@db/schema';
+import { championship, eventTeam, location, sport, team, teamToChampionships, ticket, ticketing, user } from '@db/schema';
 import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 type TeamChampionship = InferSelectModel<typeof teamToChampionships>;
 
@@ -11,3 +11,6 @@ export type CreateTicket = InferInsertModel<typeof ticket>;
 export type Ticketing = InferSelectModel<typeof ticketing>;
 export type TeamWithChampionships = InferSelectModel<typeof team> & { teamToChampionships: TeamChampionship[] };
 export type CreateEventTeam = InferInsertModel<typeof eventTeam>;
+
+export type CreateUser = InferInsertModel<typeof user>;
+export type User = InferSelectModel<typeof user>;

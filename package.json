@@ -3,7 +3,7 @@
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "NODE_TLS_REJECT_UNAUTHORIZED='0' astro dev",
+		"dev": "NODE_TLS_REJECT_UNAUTHORIZED='0' astro dev ",
 		"start": "NODE_TLS_REJECT_UNAUTHORIZED='0' HOST=0.0.0.0 PORT=8080  node ./dist/server/entry.mjs",
 		"generate": "drizzle-kit generate:pg",
 		"push": "npx tsx --env-file=.env db/index.ts",
@@ -23,9 +23,11 @@
 		"astro": "^4.5.5",
 		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.30.2",
+		"jsonwebtoken": "^9.0.2",
 		"moment-timezone": "^0.5.45",
 		"pg": "^8.11.3",
 		"postgres": "^3.4.3",
+		"simple-oauth2": "^5.0.0",
 		"svelte": "^4.2.12",
 		"tailwindcss": "^3.4.1",
 		"ts-node": "^10.9.2",
@@ -33,7 +35,9 @@
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
+		"@types/jsonwebtoken": "^9.0.6",
 		"@types/pg": "^8.11.2",
+		"@types/simple-oauth2": "^5.0.7",
 		"drizzle-kit": "^0.20.14"
 	}
 }
