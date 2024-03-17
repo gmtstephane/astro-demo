@@ -8,9 +8,6 @@ const secretKey = 'yourSecretKey';
 const authorizedUrls = ['/login'];
 
 export const onRequest = defineMiddleware(({ locals, request, url }, next) => {
-	console.log(url.pathname);
-
-	//if the current url start with one of the authorizedUrls, then we don't need to check for token
 	if (
 		authorizedUrls.some((publicUrl) => {
 			console.log(url.pathname, publicUrl);
