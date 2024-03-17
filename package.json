@@ -4,11 +4,11 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "NODE_TLS_REJECT_UNAUTHORIZED='0' astro dev",
-		"start": "astro dev",
+		"start": "HOST=0.0.0.0 PORT=8080  node ./dist/server/entry.mjs",
 		"generate": "drizzle-kit generate:pg",
 		"push": "npx tsx --env-file=.env db/index.ts",
 		"build": "astro check && astro build",
-		"stuio": "pnpm drizzle-kit studio",
+		"studio": "pnpm drizzle-kit studio",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
