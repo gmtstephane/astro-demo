@@ -1,15 +1,19 @@
 <script lang="ts">
-	import type { ChampionshipType, LocationType, SportType, TeamType, TeamWithChampionshipsType } from '@db/queries/sports';
-	import Sport from './select/Sport.svelte';
-	import Championship from './select/Championship.svelte';
-	import Team from './select/Team.svelte';
-	import Location from './select/Location.svelte';
-	import DateSelect from './select/Date.svelte';
+	import Header from './Header.svelte';
+	import type { Championship, Location, Sport, TeamWithChampionships, CreateTicket, Ticketing } from '@db/queries/types';
+	import SelectSport from './select/Sport.svelte';
+	import SelectChampionship from './select/Championship.svelte';
+	import SelectTeam from './select/Team.svelte';
+	import SelectLocation from './select/Location.svelte';
+	import SelectDate from './select/Date.svelte';
+	import NewTicket from './select/Ticket.svelte';
 
-	export let sports: SportType[];
-	export let championships: ChampionshipType[];
-	export let teams: TeamWithChampionshipsType[];
-	export let locations: LocationType[];
+	// Component props
+	export let sports: Sport[];
+	export let championships: Championship[];
+	export let teams: TeamWithChampionships[];
+	export let locations: Location[];
+	export let ticketings: Ticketing[];
 	// Component props
 
 	let sport: number = 0;
@@ -17,30 +21,60 @@
 	let awayTeam: number = 0;
 	let championship: number = 0;
 	let location: number = 0;
+	let tickets: CreateTicket[] = [];
 	let date = new Date();
 
 	$: selectedHomeTeam = teams.find((team) => team.id === homeTeam);
+	$: jsonTickets = JSON.stringify(tickets);
+
+	function addTicket() {
+		tickets = [...tickets, { eventId: 0, price: '0', ticketingId: 0, url: '' }];
+	}
+
+	function removeTicket(index: number) {
+		tickets = tickets.filter((_, i) => i !== index);
+	}
+
+	function UpdateTicket(index: number, url: string, price: string, ticketingId: number) {
+		tickets[index].url = url;
+		tickets[index].price = price;
+		tickets[index].ticketingId = ticketingId;
+	}
 </script>
 
-<form class="flex flex-col space-y-4">
-	<Sport bind:value={sport} {sports} />
+<form class="grid grid-cols-6 gap-5" method="post">
+	<Header Title="Evenement" Description="Information sur l'evenement" />
+	<SelectSport bind:value={sport} {sports} />
 	{#key sport}
-		<Championship bind:value={championship} selectedSport={sport} {championships} />
+		<SelectChampionship bind:value={championship} selectedSport={sport} {championships} />
 	{/key}
 	{#key championship}
-		<Team name="homeTeam" label={'Equipe domicile'} bind:value={homeTeam} {championship} {teams} />
-		<Team name="awayTeam" label={'Equipe exterieur'} bind:value={awayTeam} {championship} {teams} />
+		<SelectTeam name="homeTeam" label={'Equipe domicile'} bind:value={homeTeam} {championship} {teams} />
+		<SelectTeam name="awayTeam" label={'Equipe exterieur'} bind:value={awayTeam} {championship} {teams} />
 	{/key}
 	{#key selectedHomeTeam}
-		<Location bind:value={location} {locations} {selectedHomeTeam} />
+		<SelectLocation bind:value={location} {locations} {selectedHomeTeam} />
 	{/key}
-	<DateSelect bind:value={date} />
+	<SelectDate bind:value={date} />
+
+	<Header Title="Billets" Description="Information sur les billets" />
+
+	{#each tickets as ticket, index}
+		<NewTicket {UpdateTicket} {ticket} onRemove={() => removeTicket(index)} {ticketings} {index} />
+	{/each}
+
+	<div class="col-span-full">
+		<button type="button" on:click={addTicket}>Add Ticket</button>
+	</div>
+
+	<input name="tickets" bind:value={jsonTickets} hidden />
+	<div class="col-span-full flex items-center justify-center mt-10">
+		<button type="submit">Create Event</button>
+	</div>
 </form>
 
-<!-- <div class="mt-10"></div>
-<p>Selected Sport: {sport}</p>
-<p>Selected Championship: {championship}</p>
-<p>Selected HomeTeam: {homeTeam}</p>
-<p>Selected AwayTeam: {awayTeam}</p>
-<p>Selected Location: {location}</p>
-<p>Selected Date: {date}</p> -->
+<style>
+	button {
+		@apply flex  text-center items-center  justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black;
+	}
+</style>

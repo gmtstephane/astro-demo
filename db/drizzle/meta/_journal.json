@@ -15,6 +15,20 @@
       "when": 1710595899649,
       "tag": "0001_fair_sentinel",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1710685642591,
+      "tag": "0002_adorable_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1710685715237,
+      "tag": "0003_lively_paibok",
+      "breakpoints": true
     }
   ]
 }

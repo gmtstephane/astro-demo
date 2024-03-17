@@ -65,6 +65,7 @@ export const team = pgTable(
 		unq: unique().on(t.name, t.sportId),
 	})
 );
+
 export const usersRelations = relations(team, ({ many }) => ({
 	teamToChampionships: many(teamToChampionships),
 }));
@@ -92,5 +93,78 @@ export const teamsToChampionshipsRelations = relations(teamToChampionships, ({ o
 	championship: one(championship, {
 		fields: [teamToChampionships.championshipId],
 		references: [championship.id],
+	}),
+}));
+
+export const eventTeam = pgTable(
+	'event_team',
+	{
+		id: serial('id').primaryKey(),
+		championshipId: integer('championship_id')
+			.references(() => championship.id)
+			.notNull(),
+		homeTeamId: integer('home_team_id')
+			.references(() => team.id)
+			.notNull(),
+		awayTeamId: integer('away_team_id')
+			.references(() => team.id)
+			.notNull(),
+		eventDate: timestamp('event_date').notNull(),
+		locationId: integer('location_id')
+			.references(() => location.id)
+			.notNull(),
+		sportId: integer('sport_id')
+			.references(() => sport.id)
+			.notNull(),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at'),
+	},
+	(t) => ({
+		unq: unique().on(t.championshipId, t.homeTeamId, t.awayTeamId, t.eventDate),
+	})
+);
+
+export const evenTeamRelation = relations(eventTeam, ({ many, one }) => ({
+	tickets: many(ticket),
+	homeTeam: one(team, {
+		fields: [eventTeam.homeTeamId],
+		references: [team.id],
+	}),
+	awayTeam: one(team, {
+		fields: [eventTeam.awayTeamId],
+		references: [team.id],
+	}),
+}));
+
+export const ticketing = pgTable(
+	'ticketing',
+	{
+		id: serial('id').primaryKey(),
+		name: text('name').notNull(),
+		iconSvg: text('icon_svg').notNull().default(''),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at'),
+	},
+	(t) => ({
+		unq: unique().on(t.name),
+	})
+);
+
+export const ticket = pgTable('ticket', {
+	id: serial('id').primaryKey(),
+	eventId: integer('event_id').notNull(),
+	ticketingId: integer('ticketing_id')
+		.references(() => ticketing.id)
+		.notNull(),
+	price: numeric('price').notNull(),
+	url: text('url').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at'),
+});
+
+export const ticketsRelation = relations(ticket, ({ one }) => ({
+	eventTeam: one(eventTeam, {
+		fields: [ticket.eventId],
+		references: [eventTeam.id],
 	}),
 }));
