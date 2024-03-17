@@ -5,6 +5,7 @@ export const clientID = import.meta.env.GOOGLE_CLIENT_ID;
 export const clientSecret = import.meta.env.GOOGLE_CLIENT_SECRET;
 export const AppUrl = import.meta.env.APP_URL || 'http://localhost:4321';
 
+console.log('using app url', AppUrl);
 export const GoogleConfig = {
 	client: {
 		id: clientID,
