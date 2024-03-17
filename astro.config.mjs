@@ -12,5 +12,5 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone'
   }),
-  integrations: [svelte(), tailwind(), sentry(), spotlightjs()]
+  integrations: [svelte(), tailwind(), sentry()]
 });
