@@ -1,9 +1,31 @@
 {
-  "id": "f59f24e1-9aed-4695-87f8-2d29aa5802c5",
+  "id": "0773faed-ab25-4765-b2c0-22e1e27b02a5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
+    "event_type": {
+      "name": "event_type",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sport_type": {
+          "name": "sport_type",
+          "type": "sport_type",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "championship": {
       "name": "championship",
       "schema": "",
@@ -64,6 +86,13 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "championship_name_unique": {
+          "name": "championship_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        },
         "championship_id_name_unique": {
           "name": "championship_id_name_unique",
           "nullsNotDistinct": false,
@@ -80,9 +109,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "championship_id": {
           "name": "championship_id",
@@ -264,13 +294,13 @@
         },
         "latitude": {
           "name": "latitude",
-          "type": "numeric",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": true
         },
         "longitude": {
           "name": "longitude",
-          "type": "numeric",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": true
         },
@@ -291,7 +321,15 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "location_name_unique": {
+          "name": "location_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
     },
     "sport": {
       "name": "sport",
@@ -376,6 +414,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "championships": {
+          "name": "championships",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -421,6 +465,13 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "team_name_unique": {
+          "name": "team_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        },
         "team_name_sport_id_unique": {
           "name": "team_name_sport_id_unique",
           "nullsNotDistinct": false,
@@ -430,63 +481,6 @@
           ]
         }
       }
-    },
-    "team_to_championships": {
-      "name": "team_to_championships",
-      "schema": "",
-      "columns": {
-        "team_id": {
-          "name": "team_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "championship_id": {
-          "name": "championship_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "team_to_championships_team_id_team_id_fk": {
-          "name": "team_to_championships_team_id_team_id_fk",
-          "tableFrom": "team_to_championships",
-          "tableTo": "team",
-          "columnsFrom": [
-            "team_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "team_to_championships_championship_id_championship_id_fk": {
-          "name": "team_to_championships_championship_id_championship_id_fk",
-          "tableFrom": "team_to_championships",
-          "tableTo": "championship",
-          "columnsFrom": [
-            "championship_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "team_to_championships_team_id_championship_id_pk": {
-          "name": "team_to_championships_team_id_championship_id_pk",
-          "columns": [
-            "team_id",
-            "championship_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
     },
     "ticket": {
       "name": "ticket",
@@ -500,7 +494,7 @@
         },
         "event_id": {
           "name": "event_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -627,6 +621,13 @@
           "primaryKey": false,
           "notNull": true
         },
+        "userType": {
+          "name": "userType",
+          "type": "userType",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Customer'"
+        },
         "email": {
           "name": "email",
           "type": "text",
@@ -687,6 +688,14 @@
           "columns": [
             "email"
           ]
+        },
+        "user_account_provider_id_provider_unique": {
+          "name": "user_account_provider_id_provider_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "provider_id",
+            "provider"
+          ]
         }
       }
     }
@@ -704,6 +713,13 @@
         "Team": "Team",
         "Individual": "Individual",
         "Event": "Event"
+      }
+    },
+    "userType": {
+      "name": "userType",
+      "values": {
+        "Customer": "Customer",
+        "Admin": "Admin"
       }
     }
   },

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { type Location, type TeamType } from '@db/queries/types';
+	import { type Location, type Team } from '@db/queries/types';
 
 	// Component props
-	export let selectedHomeTeam: TeamType | undefined;
+	export let selectedHomeTeam: Team | undefined;
 	export let locations: Location[];
 	export let value: number = 0;
 	// Component props

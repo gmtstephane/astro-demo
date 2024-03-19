@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Header from './Header.svelte';
-	import type { Championship, Location, Sport, TeamWithChampionships, CreateTicket, Ticketing } from '@db/queries/types';
+	import type { Championship, Location, Sport, CreateTicket, Ticketing, Team } from '@db/queries/types';
 	import SelectSport from './select/Sport.svelte';
 	import SelectChampionship from './select/Championship.svelte';
 	import SelectTeam from './select/Team.svelte';
@@ -11,7 +11,7 @@
 	// Component props
 	export let sports: Sport[];
 	export let championships: Championship[];
-	export let teams: TeamWithChampionships[];
+	export let teams: Team[];
 	export let locations: Location[];
 	export let ticketings: Ticketing[];
 	// Component props
@@ -28,7 +28,7 @@
 	$: jsonTickets = JSON.stringify(tickets);
 
 	function addTicket() {
-		tickets = [...tickets, { eventId: 0, price: '0', ticketingId: 0, url: '' }];
+		tickets = [...tickets, { eventId: '', price: '0', ticketingId: 0, url: '' }];
 	}
 
 	function removeTicket(index: number) {

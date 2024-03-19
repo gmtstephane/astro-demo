@@ -1,0 +1,7 @@
+---
+import { Google } from '@src/lib/auth/google';
+const googleRoute = await Google.Web.AuthUrl();
+---
+
+<h1>Login Page</h1>
+<a href={googleRoute}>Google</a>

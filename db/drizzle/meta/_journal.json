@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1710710421302,
-      "tag": "0000_fixed_spectrum",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1710711536260,
-      "tag": "0001_slim_pixie",
+      "when": 1710884351481,
+      "tag": "0000_curious_jasper_sitwell",
       "breakpoints": true
     }
   ]

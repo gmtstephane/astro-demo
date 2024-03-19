@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { type TeamWithChampionships } from '@db/queries/types';
+	import { type Team } from '@db/queries/types';
 
 	// Component props
 	export let championship: number;
-	export let teams: TeamWithChampionships[];
+	export let teams: Team[];
 	export let value: number = 0;
 	export let name: string = 'team';
 	export let label = 'Team';
-	let TeamsByChampioniships = teams.filter((team) => team.teamToChampionships.some((c) => c.championshipId === championship));
+	let TeamsByChampioniships = teams.filter((team) => team.championships.some((c) => c === championship));
 </script>
 
 <div class="col-span-3">

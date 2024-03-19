@@ -1,6 +1,6 @@
 ---
 import { db } from '@db/config';
-import { eventTeam, ticket } from '@db/schema';
+import { eventTeam, ticket, eventType } from '@db/schema';
 import NewEvent from '@src/components/forms/NewEvent.svelte';
 import Main from '@src/Layout.astro';
 import '@src/styles/global.css';
@@ -10,7 +10,7 @@ import type { CreateTicket } from '@db/queries/types';
 
 const sports = await db.query.sport.findMany();
 const championships = await db.query.championship.findMany();
-const teams = await db.query.team.findMany({ with: { teamToChampionships: true } });
+const teams = await db.query.team.findMany();
 const locations = await db.query.location.findMany();
 const ticketings = await db.query.ticketing.findMany();
 
@@ -56,6 +56,16 @@ if (Astro.request.method === 'POST') {
 					sportId: createEventForm.sport,
 				})
 				.returning();
+
+			if (event.length === 0) {
+				tx.rollback();
+				throw new Error('Failed to create event');
+			}
+
+			await tx.insert(eventType).values({
+				eventid: event[0].id,
+				type: 'Team',
+			});
 
 			tickets.map(async (t) => {
 				await tx.insert(ticket).values({

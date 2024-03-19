@@ -1,18 +1,30 @@
 import { relations } from 'drizzle-orm';
-import { serial, text, timestamp, pgTable, numeric, integer, pgEnum, unique, primaryKey } from 'drizzle-orm/pg-core';
+import {
+	serial,
+	text,
+	timestamp,
+	pgTable,
+	numeric,
+	integer,
+	pgEnum,
+	unique,
+	primaryKey,
+	uuid,
+	doublePrecision,
+} from 'drizzle-orm/pg-core';
 
 export const SportTypeEnum = pgEnum('sport_type', ['Team', 'Individual', 'Event']);
 
 export const location = pgTable('location', {
 	id: serial('id').primaryKey(),
-	name: text('name').notNull(),
+	name: text('name').notNull().unique(),
 	address: text('address').notNull(),
 	city: text('city').notNull(),
 	state: text('state').notNull(),
 	country: text('country').notNull(),
 	zipcode: integer('zipcode').notNull(),
-	latitude: numeric('latitude').notNull(),
-	longitude: numeric('longitude').notNull(),
+	latitude: doublePrecision('latitude').notNull(),
+	longitude: doublePrecision('longitude').notNull(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at'),
 });
@@ -29,7 +41,7 @@ export const championship = pgTable(
 	'championship',
 	{
 		id: serial('id').primaryKey(),
-		name: text('name').notNull(),
+		name: text('name').notNull().unique(),
 		sportId: integer('sport_id')
 			.references(() => sport.id)
 			.notNull(),
@@ -42,15 +54,11 @@ export const championship = pgTable(
 	})
 );
 
-export const championshipsRelations = relations(championship, ({ many }) => ({
-	teamToChampionships: many(teamToChampionships),
-}));
-
 export const team = pgTable(
 	'team',
 	{
 		id: serial('id').primaryKey(),
-		name: text('name').notNull(),
+		name: text('name').notNull().unique(),
 		sportId: integer('sport_id')
 			.references(() => sport.id)
 			.notNull(),
@@ -58,6 +66,7 @@ export const team = pgTable(
 			.references(() => location.id)
 			.notNull(),
 		iconSvg: text('icon').notNull(),
+		championships: integer('championships').array().notNull(),
 		createdAt: timestamp('created_at').notNull().defaultNow(),
 		updatedAt: timestamp('updated_at'),
 	},
@@ -66,40 +75,10 @@ export const team = pgTable(
 	})
 );
 
-export const usersRelations = relations(team, ({ many }) => ({
-	teamToChampionships: many(teamToChampionships),
-}));
-
-export const teamToChampionships = pgTable(
-	'team_to_championships',
-	{
-		teamId: integer('team_id')
-			.notNull()
-			.references(() => team.id),
-		championshipId: integer('championship_id')
-			.notNull()
-			.references(() => championship.id),
-	},
-	(t) => ({
-		pk: primaryKey({ columns: [t.teamId, t.championshipId] }),
-	})
-);
-
-export const teamsToChampionshipsRelations = relations(teamToChampionships, ({ one }) => ({
-	team: one(team, {
-		fields: [teamToChampionships.teamId],
-		references: [team.id],
-	}),
-	championship: one(championship, {
-		fields: [teamToChampionships.championshipId],
-		references: [championship.id],
-	}),
-}));
-
 export const eventTeam = pgTable(
 	'event_team',
 	{
-		id: serial('id').primaryKey(),
+		id: uuid('id').primaryKey().defaultRandom(),
 		championshipId: integer('championship_id')
 			.references(() => championship.id)
 			.notNull(),
@@ -136,23 +115,22 @@ export const evenTeamRelation = relations(eventTeam, ({ many, one }) => ({
 	}),
 }));
 
-export const ticketing = pgTable(
-	'ticketing',
-	{
-		id: serial('id').primaryKey(),
-		name: text('name').notNull(),
-		iconSvg: text('icon_svg').notNull().default(''),
-		createdAt: timestamp('created_at').notNull().defaultNow(),
-		updatedAt: timestamp('updated_at'),
-	},
-	(t) => ({
-		unq: unique().on(t.name),
-	})
-);
+export const ticketing = pgTable('ticketing', {
+	id: serial('id').primaryKey(),
+	name: text('name').notNull().unique(),
+	iconSvg: text('icon_svg').notNull().default(''),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at'),
+});
+
+export const eventType = pgTable('event_type', {
+	eventid: uuid('id').primaryKey().notNull(),
+	type: SportTypeEnum('sport_type').notNull(),
+});
 
 export const ticket = pgTable('ticket', {
 	id: serial('id').primaryKey(),
-	eventId: integer('event_id').notNull(),
+	eventId: uuid('event_id').notNull(),
 	ticketingId: integer('ticketing_id')
 		.references(() => ticketing.id)
 		.notNull(),
@@ -172,17 +150,23 @@ export const ticketsRelation = relations(ticket, ({ one }) => ({
 export const ProviderEnum = pgEnum('provider', ['Google']);
 export const UserTypeEnum = pgEnum('userType', ['Customer', 'Admin']);
 
-export const user = pgTable('user_account', {
-	id: serial('id').primaryKey(),
-	providerId: text('provider_id').notNull(),
-	provider: ProviderEnum('provider').notNull(),
-	userType: UserTypeEnum('userType').notNull().default('Customer'),
-	email: text('email').notNull().unique(),
-	name: text('name').notNull(),
-	givenName: text('given_name').notNull(),
-	familyName: text('family_name').notNull(),
-	picture: text('picture').notNull(),
-	locale: text('locale').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
-	updatedAt: timestamp('updated_at'),
-});
+export const user = pgTable(
+	'user_account',
+	{
+		id: serial('id').primaryKey(),
+		providerId: text('provider_id').notNull(),
+		provider: ProviderEnum('provider').notNull(),
+		userType: UserTypeEnum('userType').notNull().default('Customer'),
+		email: text('email').notNull().unique(),
+		name: text('name').notNull(),
+		givenName: text('given_name').notNull(),
+		familyName: text('family_name').notNull(),
+		picture: text('picture').notNull(),
+		locale: text('locale').notNull(),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at'),
+	},
+	(t) => ({
+		unq: unique().on(t.providerId, t.provider),
+	})
+);
