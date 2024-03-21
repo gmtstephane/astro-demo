@@ -1,6 +1,6 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
-import type { User } from '@db/queries/types';
+import type { User } from '@db/types';
 
 // declare namespace App {
 // 	interface Locals {

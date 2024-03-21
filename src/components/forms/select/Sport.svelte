@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Sport } from '@db/queries/types';
+	import { type Sport } from '@db/types';
 	import { type SportType } from '@db/schema';
 
 	// Component props

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Player, type Team } from '@db/queries/types';
+	import { type Player, type Team } from '@db/types';
 
 	// Component props
 	export let sport: number;

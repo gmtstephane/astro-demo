@@ -1,4 +1,4 @@
-import type { CreateTicket } from '@db/queries/types';
+import type { CreateTicket } from '@db/types';
 import { z } from 'zod';
 import moment from 'moment-timezone';
 import { db } from '@db/config';

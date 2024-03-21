@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Location, type Team } from '@db/queries/types';
+	import { type Location, type Team } from '@db/types';
 
 	// Component props
 	export let selectedHomeTeam: Team | undefined = undefined;

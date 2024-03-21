@@ -1,16 +1,4 @@
-import {
-	SportTypeEnum,
-	championship,
-	eventPlayer,
-	eventTeam,
-	location,
-	player,
-	sport,
-	team,
-	ticket,
-	ticketing,
-	user,
-} from '@db/schema';
+import { championship, eventPlayer, eventTeam, location, player, sport, team, ticket, ticketing, user } from '@db/schema';
 import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 
 export type Sport = InferSelectModel<typeof sport>;

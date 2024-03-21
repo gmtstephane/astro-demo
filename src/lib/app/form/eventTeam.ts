@@ -1,4 +1,4 @@
-import type { CreateTicket } from '@db/queries/types';
+import type { CreateTicket } from '@db/types';
 import { createEventTeamSchema } from './schemas';
 import moment from 'moment-timezone';
 import { db } from '@db/config';

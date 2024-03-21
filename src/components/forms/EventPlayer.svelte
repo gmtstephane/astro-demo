@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Header from './Header.svelte';
-	import type { Championship, Location, Sport, CreateTicket, Ticketing, Team, Player } from '@db/queries/types';
+	import type { Championship, Location, Sport, CreateTicket, Ticketing, Team, Player } from '@db/types';
 	import SelectSport from './select/Sport.svelte';
 	import SelectChampionship from './select/Championship.svelte';
 	import SelectPlayer from './select/Player.svelte';

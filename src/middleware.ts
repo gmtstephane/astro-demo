@@ -1,4 +1,4 @@
-import type { User } from '@db/queries/types';
+import type { User } from '@db/types';
 import { defineMiddleware } from 'astro/middleware';
 import pkg from 'jsonwebtoken';
 import { RefreshToken, secretKey } from './lib/auth/tokens';

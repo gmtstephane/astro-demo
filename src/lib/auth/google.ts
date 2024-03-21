@@ -1,6 +1,6 @@
 import { AuthorizationCode, type AccessToken, type Token } from 'simple-oauth2';
 import { AppUrl } from '../app/app';
-import type { User } from '@db/queries/types';
+import type { User } from '@db/types';
 import { db } from '@db/config';
 import { and, eq } from 'drizzle-orm';
 import { user } from '@db/schema';

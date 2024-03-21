@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type CreateTicket, type Ticketing } from '@db/queries/types';
+	import { type CreateTicket, type Ticketing } from '@db/types';
 	import SelectTicketing from './Ticketing.svelte';
 	export let ticketings: Ticketing[];
 	export let index = 0;

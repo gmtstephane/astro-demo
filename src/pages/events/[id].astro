@@ -2,7 +2,7 @@
 import { db } from '@db/config';
 import { eventType, eventTeam, eventPlayer } from '@db/schema';
 import { eq } from 'drizzle-orm';
-import { type Event, isEventTeam, isEventPlayer } from '@db/queries/types';
+import { type Event, isEventTeam, isEventPlayer } from '@db/types';
 import Main from '@src/Layout.astro';
 
 const { id } = Astro.params;

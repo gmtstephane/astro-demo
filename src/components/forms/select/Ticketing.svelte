@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Ticketing } from '@db/queries/types';
+	import { type Ticketing } from '@db/types';
 	export let ticketings: Ticketing[];
 	export let value: number = 0;
 	export let onchange: () => void;
