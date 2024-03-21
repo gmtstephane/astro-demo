@@ -5,18 +5,18 @@
 	export let ticketings: Ticketing[];
 	let value = '';
 
-	let tickets: CreateTicket[] = [];
+	export let tickets: CreateTicket[] = [];
 	$: value = JSON.stringify(tickets);
 
 	function addTicket() {
-		tickets = [...tickets, { eventId: '', price: '0', ticketingId: 0, url: '' }];
+		tickets = [...tickets, { eventId: '', price: 0, ticketingId: 0, url: '' }];
 	}
 
 	function removeTicket(index: number) {
 		tickets = tickets.filter((_, i) => i !== index);
 	}
 
-	function UpdateTicket(index: number, url: string, price: string, ticketingId: number) {
+	function UpdateTicket(index: number, url: string, price: number, ticketingId: number) {
 		tickets[index].url = url;
 		tickets[index].price = price;
 		tickets[index].ticketingId = ticketingId;

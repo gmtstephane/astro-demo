@@ -11,7 +11,13 @@ import {
 	ticketing,
 	user,
 } from '@db/schema';
-import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
+import { type InferSelectModel, type InferInsertModel, type ExtractTablesWithRelations } from 'drizzle-orm';
+
+import type { PgTransaction } from 'drizzle-orm/pg-core';
+import type { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
+import * as schema from '@db/schema';
+
+export type dbTx = PgTransaction<NodePgQueryResultHKT, typeof schema, ExtractTablesWithRelations<typeof schema>>;
 
 export type Sport = InferSelectModel<typeof sport>;
 export type Location = InferSelectModel<typeof location>;

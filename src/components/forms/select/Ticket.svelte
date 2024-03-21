@@ -5,14 +5,14 @@
 	export let index = 0;
 	export let ticket: CreateTicket;
 	export let onRemove: () => void;
-	export let UpdateTicket: (index: number, url: string, price: string, ticketingId: number) => void;
+	export let UpdateTicket: (index: number, url: string, price: number, ticketingId: number) => void;
 
 	function update() {
 		UpdateTicket(index, ticket.url, ticket.price, ticket.ticketingId);
 	}
 </script>
 
-<div class="ticket col-span-6 grid grid-cols-12 gap-5">
+<div class="ticket col-span-6 grid grid-cols-12 gap-5 mb-1">
 	<SelectTicketing onchange={update} bind:value={ticket.ticketingId} {ticketings} />
 	<div class="col-span-2">
 		<label for="price">Price</label>
@@ -22,7 +22,7 @@
 		<label for="url">Url</label>
 		<input on:change={update} type="text" placeholder="Url" bind:value={ticket.url} />
 	</div>
-	<div class="flex items-end">
+	<div class="flex items-end w-full">
 		<button on:click={onRemove} type="button">Remove</button>
 	</div>
 </div>

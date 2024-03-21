@@ -187,7 +187,7 @@ export const ticket = pgTable('event_ticket', {
 	ticketingId: integer('ticketing_id')
 		.references(() => ticketing.id)
 		.notNull(),
-	price: numeric('price').notNull(),
+	price: doublePrecision('price').notNull(),
 	url: text('url').notNull(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at'),

@@ -1,6 +1,6 @@
 import { db } from '@db/config';
-import { eventTeam, eventType, eventPlayer } from '@db/schema';
-import type { Event } from '@db/types';
+import { eventTeam, eventType, eventPlayer, ticket } from '@db/schema';
+import type { Event, Ticket } from '@db/types';
 import { eq } from 'drizzle-orm';
 
 export async function GetEvent(id: string): Promise<Event | undefined> {

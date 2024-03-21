@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
 export const ticketSchema = z.object({
+	id: z.number().optional(),
 	ticketingId: z.number(),
-	price: z.string(),
+	price: z.number(),
 	url: z.string(),
 });
 
@@ -13,7 +14,7 @@ export const createEventTeamSchema = z.object({
 	homeTeam: z.number(),
 	awayTeam: z.number(),
 	date: z.date(),
-	tickets: z.array(ticketSchema),
+	// tickets: z.array(ticketSchema),
 });
 
 export const createEventPlayerSchema = z.object({
@@ -23,7 +24,7 @@ export const createEventPlayerSchema = z.object({
 	player1: z.number(),
 	player2: z.number(),
 	date: z.date(),
-	tickets: z.array(ticketSchema),
+	// tickets: z.array(ticketSchema),
 });
 
 export const createEventGenericSchema = z.object({
@@ -32,5 +33,5 @@ export const createEventGenericSchema = z.object({
 	name: z.string(),
 	image: z.string(),
 	date: z.date(),
-	tickets: z.array(ticketSchema),
+	// tickets: z.array(ticketSchema),
 });

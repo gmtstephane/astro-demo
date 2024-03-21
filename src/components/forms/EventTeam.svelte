@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Header from './Header.svelte';
-	import type { Championship, Location, Sport, CreateTicket, Ticketing, Team } from '@db/types';
+	import type { Championship, Location, Sport, Ticketing, Team, EventTeam, CreateTicket } from '@db/types';
 	import SelectSport from './select/Sport.svelte';
 	import SelectChampionship from './select/Championship.svelte';
 	import SelectTeam from './select/Team.svelte';
@@ -14,14 +14,17 @@
 	export let teams: Team[];
 	export let locations: Location[];
 	export let ticketings: Ticketing[];
+
+	export let defaultValues: EventTeam | null = null;
+	export let tickets: CreateTicket[] = [];
 	// Component props
 
-	let sport: number = 0;
-	let homeTeam: number = 0;
-	let awayTeam: number = 0;
-	let championship: number = 0;
-	let location: number = 0;
-	let date = new Date();
+	let sport: number = defaultValues?.sportId || 0;
+	let homeTeam: number = defaultValues?.homeTeamId || 0;
+	let awayTeam: number = defaultValues?.awayTeamId || 0;
+	let championship: number = defaultValues?.championshipId || 0;
+	let location: number = defaultValues?.locationId || 0;
+	let date = defaultValues?.eventDate ? defaultValues.eventDate : new Date();
 
 	$: selectedHomeTeam = teams.find((team) => team.id === homeTeam);
 </script>
@@ -43,15 +46,9 @@
 	{/key}
 	<SelectDate bind:value={date} />
 	<Header Title="Billets" Description="Information sur les billets" />
-	<TicketManager {ticketings} />
+	<TicketManager {ticketings} {tickets} />
 
 	<div class="col-span-full flex items-center justify-center mt-10">
-		<button type="submit">Create Event</button>
+		<button class="button" type="submit">Create Event</button>
 	</div>
 </form>
-
-<style>
-	button {
-		@apply flex  text-center items-center  justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black;
-	}
-</style>

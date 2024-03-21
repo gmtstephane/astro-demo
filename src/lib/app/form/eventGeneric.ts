@@ -4,6 +4,8 @@ import { db } from '@db/config';
 
 import { ticket, eventType, eventGeneric } from '@db/schema';
 import { createEventGenericSchema } from './schemas';
+import { eq } from 'drizzle-orm';
+import { UpdateTickets } from './update';
 
 export async function CreateEventGeneric(data: FormData): Promise<Response> {
 	try {
@@ -14,7 +16,6 @@ export async function CreateEventGeneric(data: FormData): Promise<Response> {
 			name: data.get('name'),
 			image: data.get('image'),
 			date: moment.tz(data.get('date')?.toString(), 'Europe/Paris').toDate(),
-			tickets: tickets,
 		});
 
 		const event = await db.transaction(async (tx) => {
@@ -50,9 +51,48 @@ export async function CreateEventGeneric(data: FormData): Promise<Response> {
 			return event[0];
 		});
 
-		return new Response(null, { status: 303, headers: { Location: '/events/' + event.id } });
+		return new Response(null, { status: 303, headers: { Location: '/events/' + event.id + '?create=true' } });
 	} catch (error) {
-		console.log(error);
-		return new Response('Failed to create event', { status: 500 });
+		return new Response(JSON.stringify(error), { status: 500 });
+	}
+}
+
+export async function UpdateEventGeneric(data: FormData, id: string) {
+	try {
+		const tickets: CreateTicket[] = JSON.parse(data.get('tickets')?.toString() || '[]');
+		const createEventForm = createEventGenericSchema.parse({
+			sport: Number(data.get('sport')),
+			location: Number(data.get('location')),
+			name: data.get('name'),
+			image: data.get('image'),
+			date: moment.tz(data.get('date')?.toString(), 'Europe/Paris').toDate(),
+		});
+
+		const event = await db.transaction(async (tx) => {
+			const event = await tx
+				.update(eventGeneric)
+				.set({
+					locationId: createEventForm.location,
+					sportId: createEventForm.sport,
+					eventDate: createEventForm.date,
+					icon: createEventForm.image,
+					name: createEventForm.name,
+					updatedAt: new Date(),
+				})
+				.where(eq(eventGeneric.id, id))
+				.returning();
+
+			if (event.length === 0) {
+				throw new Error('Failed to update event');
+			}
+
+			await UpdateTickets(tickets, id, { withTx: tx });
+
+			return event[0];
+		});
+
+		return new Response(null, { status: 303, headers: { Location: '/events/' + event.id + '?update=true' } });
+	} catch (error) {
+		return new Response(JSON.stringify(error), { status: 500 });
 	}
 }
