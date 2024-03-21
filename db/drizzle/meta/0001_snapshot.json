@@ -1,6 +1,6 @@
 {
-  "id": "b0d633d6-18e3-41a9-a05f-1d827259e7fa",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "8d14222b-b5e6-4bb4-897b-344f81596626",
+  "prevId": "b0d633d6-18e3-41a9-a05f-1d827259e7fa",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -77,6 +77,103 @@
           "columns": [
             "id",
             "name"
+          ]
+        }
+      }
+    },
+    "event_generic": {
+      "name": "event_generic",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "icon": {
+          "name": "icon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_date": {
+          "name": "event_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location_id": {
+          "name": "location_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sport_id": {
+          "name": "sport_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "event_generic_location_id_location_id_fk": {
+          "name": "event_generic_location_id_location_id_fk",
+          "tableFrom": "event_generic",
+          "tableTo": "location",
+          "columnsFrom": [
+            "location_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "event_generic_sport_id_sport_id_fk": {
+          "name": "event_generic_sport_id_sport_id_fk",
+          "tableFrom": "event_generic",
+          "tableTo": "sport",
+          "columnsFrom": [
+            "sport_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "event_generic_name_sport_id_event_date_unique": {
+          "name": "event_generic_name_sport_id_event_date_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name",
+            "sport_id",
+            "event_date"
           ]
         }
       }

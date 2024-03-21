@@ -6,7 +6,7 @@
 	import SelectTeam from './select/Team.svelte';
 	import SelectLocation from './select/Location.svelte';
 	import SelectDate from './select/Date.svelte';
-	import NewTicket from './select/Ticket.svelte';
+	import TicketManager from './select/TicketManager.svelte';
 
 	// Component props
 	export let sports: Sport[];
@@ -21,25 +21,9 @@
 	let awayTeam: number = 0;
 	let championship: number = 0;
 	let location: number = 0;
-	let tickets: CreateTicket[] = [];
 	let date = new Date();
 
 	$: selectedHomeTeam = teams.find((team) => team.id === homeTeam);
-	$: jsonTickets = JSON.stringify(tickets);
-
-	function addTicket() {
-		tickets = [...tickets, { eventId: '', price: '0', ticketingId: 0, url: '' }];
-	}
-
-	function removeTicket(index: number) {
-		tickets = tickets.filter((_, i) => i !== index);
-	}
-
-	function UpdateTicket(index: number, url: string, price: string, ticketingId: number) {
-		tickets[index].url = url;
-		tickets[index].price = price;
-		tickets[index].ticketingId = ticketingId;
-	}
 </script>
 
 <form class="grid grid-cols-6 gap-5" method="post">
@@ -58,18 +42,9 @@
 		{/key}
 	{/key}
 	<SelectDate bind:value={date} />
-
 	<Header Title="Billets" Description="Information sur les billets" />
+	<TicketManager {ticketings} />
 
-	{#each tickets as ticket, index}
-		<NewTicket {UpdateTicket} {ticket} onRemove={() => removeTicket(index)} {ticketings} {index} />
-	{/each}
-
-	<div class="col-span-full">
-		<button type="button" on:click={addTicket}>Add Ticket</button>
-	</div>
-
-	<input name="tickets" bind:value={jsonTickets} hidden />
 	<div class="col-span-full flex items-center justify-center mt-10">
 		<button type="submit">Create Event</button>
 	</div>

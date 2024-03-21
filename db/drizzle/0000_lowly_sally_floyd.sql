@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS "team" (
 	CONSTRAINT "team_name_sport_id_unique" UNIQUE("name","sport_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "ticket" (
+CREATE TABLE IF NOT EXISTS "event_ticket" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"event_id" uuid NOT NULL,
 	"ticketing_id" integer NOT NULL,
@@ -221,7 +221,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "ticket" ADD CONSTRAINT "ticket_ticketing_id_ticketing_id_fk" FOREIGN KEY ("ticketing_id") REFERENCES "ticketing"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "event_ticket" ADD CONSTRAINT "event_ticket_ticketing_id_ticketing_id_fk" FOREIGN KEY ("ticketing_id") REFERENCES "ticketing"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

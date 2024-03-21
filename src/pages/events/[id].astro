@@ -1,33 +1,17 @@
 ---
-import { db } from '@db/config';
-import { eventType, eventTeam, eventPlayer } from '@db/schema';
-import { eq } from 'drizzle-orm';
-import { type Event, isEventTeam, isEventPlayer } from '@db/types';
+import { isEventTeam, isEventPlayer, isEventGeneric } from '@db/types';
 import Main from '@src/Layout.astro';
+import { GetEvent } from '@db/queries/Event';
 
 const { id } = Astro.params;
-if (!id) return new Response(null, { status: 404 });
+if (!id) return new Response(null, { status: 400 });
 
-const type = await db.query.eventType.findFirst({ where: eq(eventType.eventid, id) });
-if (!type) return new Response(null, { status: 404 });
-
-let event: Event | undefined = undefined;
-
-switch (type.type) {
-	case 'Team':
-		event = await db.query.eventTeam.findFirst({ where: eq(eventTeam.id, id) });
-		break;
-	case 'Individual':
-		event = await db.query.eventPlayer.findFirst({ where: eq(eventPlayer.id, id) });
-		break;
-}
-
-if (!event) {
-	return new Response(null, { status: 404 });
-}
+const event = await GetEvent(id);
+if (!event) return new Response(null, { status: 404 });
 ---
 
 <Main title="Evenement">
 	{isEventTeam(event) && <>EventTeam</>}
 	{isEventPlayer(event) && <>EventPlayer</>}
+	{isEventGeneric(event) && <>EventGeneric</>}
 </Main>

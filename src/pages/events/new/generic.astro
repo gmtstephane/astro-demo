@@ -1,0 +1,19 @@
+---
+import { db } from '@db/config';
+import EventPage from '@src/components/forms/EventGeneric.svelte';
+import Main from '@src/Layout.astro';
+import { CreateEventGeneric } from '@src/lib/app/form/eventGeneric';
+import '@src/styles/global.css';
+
+// Handle POST request, create a new event
+if (Astro.request.method === 'POST') return await CreateEventGeneric(await Astro.request.formData());
+
+// Handle GET request
+const sports = await db.query.sport.findMany();
+const locations = await db.query.location.findMany();
+const ticketings = await db.query.ticketing.findMany();
+---
+
+<Main title="Evenement Generique">
+	<EventPage client:load {sports} {locations} {ticketings} />
+</Main>

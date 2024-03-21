@@ -107,6 +107,27 @@ export const eventPlayer = pgTable(
 	})
 );
 
+export const eventGeneric = pgTable(
+	'event_generic',
+	{
+		id: uuid('id').primaryKey().defaultRandom(),
+		name: text('name').notNull(),
+		icon: text('icon').notNull(),
+		eventDate: timestamp('event_date').notNull(),
+		locationId: integer('location_id')
+			.references(() => location.id)
+			.notNull(),
+		sportId: integer('sport_id')
+			.references(() => sport.id)
+			.notNull(),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at'),
+	},
+	(t) => ({
+		unq: unique().on(t.name, t.sportId, t.eventDate),
+	})
+);
+
 export const eventTeam = pgTable(
 	'event_team',
 	{
@@ -160,7 +181,7 @@ export const eventType = pgTable('event_type', {
 	type: SportTypeEnum('sport_type').notNull(),
 });
 
-export const ticket = pgTable('ticket', {
+export const ticket = pgTable('event_ticket', {
 	id: serial('id').primaryKey(),
 	eventId: uuid('event_id').notNull(),
 	ticketingId: integer('ticketing_id')

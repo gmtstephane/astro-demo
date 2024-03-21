@@ -25,3 +25,12 @@ export const createEventPlayerSchema = z.object({
 	date: z.date(),
 	tickets: z.array(ticketSchema),
 });
+
+export const createEventGenericSchema = z.object({
+	sport: z.number(),
+	location: z.number(),
+	name: z.string(),
+	image: z.string(),
+	date: z.date(),
+	tickets: z.array(ticketSchema),
+});

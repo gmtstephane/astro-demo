@@ -1,4 +1,16 @@
-import { championship, eventPlayer, eventTeam, location, player, sport, team, ticket, ticketing, user } from '@db/schema';
+import {
+	championship,
+	eventGeneric,
+	eventPlayer,
+	eventTeam,
+	location,
+	player,
+	sport,
+	team,
+	ticket,
+	ticketing,
+	user,
+} from '@db/schema';
 import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 
 export type Sport = InferSelectModel<typeof sport>;
@@ -13,11 +25,13 @@ export type Ticketing = InferSelectModel<typeof ticketing>;
 
 export type EventTeam = InferSelectModel<typeof eventTeam>;
 export type EventPlayer = InferSelectModel<typeof eventPlayer>;
+export type EventGeneric = InferSelectModel<typeof eventGeneric>;
 
-export type Event = EventTeam | EventPlayer;
+export type Event = EventTeam | EventPlayer | EventGeneric;
 
 export type CreateEventTeam = InferInsertModel<typeof eventTeam>;
 export type CreateEventPlayer = InferInsertModel<typeof eventPlayer>;
+export type CreateEventGeneric = InferInsertModel<typeof eventGeneric>;
 
 export type CreateUser = InferInsertModel<typeof user>;
 export type User = InferSelectModel<typeof user>;
@@ -28,4 +42,8 @@ export function isEventTeam(event: Event): event is EventTeam {
 
 export function isEventPlayer(event: Event): event is EventPlayer {
 	return (event as EventPlayer).player1 !== undefined && (event as EventPlayer).player2 !== undefined;
+}
+
+export function isEventGeneric(event: Event): event is EventGeneric {
+	return isEventPlayer(event) === false && isEventTeam(event) === false;
 }
