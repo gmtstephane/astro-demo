@@ -10,7 +10,7 @@
 	let PlayersBySport = players.filter((p) => p.sportId === sport);
 </script>
 
-<div class="col-span-3">
+<div class="col-span-full sm:col-span-3">
 	<label for={name}>{label}</label>
 	<select {name} bind:value disabled={!sport}>
 		<option value={0}>Select a Team</option>

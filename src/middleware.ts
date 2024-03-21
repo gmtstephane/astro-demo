@@ -4,7 +4,7 @@ import pkg from 'jsonwebtoken';
 import { RefreshToken, secretKey } from './lib/auth/tokens';
 const { verify, JsonWebTokenError } = pkg;
 
-const authorizedUrls = ['/api/auth/login', '/api/auth/refresh-token'];
+const authorizedUrls = ['/api/auth/login', '/api/auth/refresh-token', '/login'];
 
 function isPublicRoute(url: URL) {
 	return authorizedUrls.some((publicUrl) => {

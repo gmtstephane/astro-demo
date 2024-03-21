@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="col-span-3">
+<div class="col-span-full sm:col-span-3">
 	<label for="location" class="block text-sm font-medium leading-6 text-gray-900">Sport</label>
 	<select name="sport" bind:value>
 		<option value={0}>Select a Sport</option>

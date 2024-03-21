@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ request }) => {
 		return new Response(null, {
 			status: 303,
 			headers: [
-				['Location', '/'],
+				['Location', '/events/new/player'],
 				['Set-Cookie', `token=${token}; HttpOnly; Secure; SameSite=Strict; Path=/;`],
 				['Set-Cookie', `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=Strict; Path=/;`],
 			],

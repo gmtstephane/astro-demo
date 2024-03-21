@@ -14,11 +14,11 @@
 
 <div class="ticket col-span-6 grid grid-cols-12 gap-5 mb-1">
 	<SelectTicketing onchange={update} bind:value={ticket.ticketingId} {ticketings} />
-	<div class="col-span-2">
+	<div class="col-span-full sm:col-span-2">
 		<label for="price">Price</label>
 		<input type="text" placeholder="Price" on:change={update} bind:value={ticket.price} />
 	</div>
-	<div class="col-span-5">
+	<div class="col-span-full sm:col-span-5">
 		<label for="url">Url</label>
 		<input on:change={update} type="text" placeholder="Url" bind:value={ticket.url} />
 	</div>

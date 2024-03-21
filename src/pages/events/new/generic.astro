@@ -6,7 +6,9 @@ import { CreateEventGeneric } from '@src/lib/app/form/eventGeneric';
 import '@src/styles/global.css';
 
 // Handle POST request, create a new event
-if (Astro.request.method === 'POST') return await CreateEventGeneric(await Astro.request.formData());
+if (Astro.request.method === 'POST') {
+	return await CreateEventGeneric(await Astro.request.formData());
+}
 
 // Handle GET request
 const sports = await db.query.sport.findMany();

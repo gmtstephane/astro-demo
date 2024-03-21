@@ -10,7 +10,7 @@
 	let TeamsByChampioniships = teams.filter((team) => team.championships.some((c) => c === championship));
 </script>
 
-<div class="col-span-3">
+<div class="col-span-full sm:col-span-3">
 	<label for={name}>{label}</label>
 	<select {name} bind:value disabled={!championship}>
 		<option value={0}>Select a Team</option>

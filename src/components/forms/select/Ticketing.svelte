@@ -5,7 +5,7 @@
 	export let onchange: () => void;
 </script>
 
-<div class="col-span-2">
+<div class="col-span-full sm:col-span-2">
 	<label for="location">Billeterie</label>
 	<select bind:value on:change={onchange} class="w-full">
 		<option value={0}>Select a Ticketing</option>
