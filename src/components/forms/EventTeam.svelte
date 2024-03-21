@@ -44,7 +44,7 @@
 
 <form class="grid grid-cols-6 gap-5" method="post">
 	<Header Title="Evenement" Description="Information sur l'evenement" />
-	<SelectSport bind:value={sport} {sports} />
+	<SelectSport bind:value={sport} {sports} sportType={'Team'} />
 	{#key sport}
 		<SelectChampionship bind:value={championship} selectedSport={sport} {championships} />
 	{/key}
@@ -52,8 +52,10 @@
 		<SelectTeam name="homeTeam" label={'Equipe domicile'} bind:value={homeTeam} {championship} {teams} />
 		<SelectTeam name="awayTeam" label={'Equipe exterieur'} bind:value={awayTeam} {championship} {teams} />
 	{/key}
-	{#key selectedHomeTeam}
-		<SelectLocation bind:value={location} {locations} {selectedHomeTeam} />
+	{#key sport}
+		{#key selectedHomeTeam}
+			<SelectLocation bind:value={location} {locations} {selectedHomeTeam} {sport} />
+		{/key}
 	{/key}
 	<SelectDate bind:value={date} />
 

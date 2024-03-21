@@ -16,11 +16,6 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "event_type" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"sport_type" "sport_type" NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "championship" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
@@ -30,6 +25,19 @@ CREATE TABLE IF NOT EXISTS "championship" (
 	"updated_at" timestamp,
 	CONSTRAINT "championship_name_unique" UNIQUE("name"),
 	CONSTRAINT "championship_id_name_unique" UNIQUE("id","name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "event_player" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"championship_id" integer NOT NULL,
+	"player1_id" integer NOT NULL,
+	"player2_id" integer NOT NULL,
+	"event_date" timestamp NOT NULL,
+	"location_id" integer NOT NULL,
+	"sport_id" integer NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp,
+	CONSTRAINT "event_player_championship_id_sport_id_player1_id_player2_id_event_date_unique" UNIQUE("championship_id","sport_id","player1_id","player2_id","event_date")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "event_team" (
@@ -45,6 +53,11 @@ CREATE TABLE IF NOT EXISTS "event_team" (
 	CONSTRAINT "event_team_championship_id_home_team_id_away_team_id_event_date_unique" UNIQUE("championship_id","home_team_id","away_team_id","event_date")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "event_type" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"sport_type" "sport_type" NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "location" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
@@ -55,9 +68,20 @@ CREATE TABLE IF NOT EXISTS "location" (
 	"zipcode" integer NOT NULL,
 	"latitude" double precision NOT NULL,
 	"longitude" double precision NOT NULL,
+	"sports" integer[],
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp,
 	CONSTRAINT "location_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "player" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"sport_id" integer,
+	"name" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp,
+	CONSTRAINT "player_name_unique" UNIQUE("name"),
+	CONSTRAINT "player_sport_id_name_unique" UNIQUE("sport_id","name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "sport" (
@@ -95,7 +119,7 @@ CREATE TABLE IF NOT EXISTS "ticket" (
 CREATE TABLE IF NOT EXISTS "ticketing" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
-	"icon_svg" text DEFAULT '' NOT NULL,
+	"icon" text DEFAULT '' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp,
 	CONSTRAINT "ticketing_name_unique" UNIQUE("name")
@@ -120,6 +144,36 @@ CREATE TABLE IF NOT EXISTS "user_account" (
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "championship" ADD CONSTRAINT "championship_sport_id_sport_id_fk" FOREIGN KEY ("sport_id") REFERENCES "sport"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "event_player" ADD CONSTRAINT "event_player_championship_id_championship_id_fk" FOREIGN KEY ("championship_id") REFERENCES "championship"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "event_player" ADD CONSTRAINT "event_player_player1_id_player_id_fk" FOREIGN KEY ("player1_id") REFERENCES "player"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "event_player" ADD CONSTRAINT "event_player_player2_id_player_id_fk" FOREIGN KEY ("player2_id") REFERENCES "player"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "event_player" ADD CONSTRAINT "event_player_location_id_location_id_fk" FOREIGN KEY ("location_id") REFERENCES "location"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "event_player" ADD CONSTRAINT "event_player_sport_id_sport_id_fk" FOREIGN KEY ("sport_id") REFERENCES "sport"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

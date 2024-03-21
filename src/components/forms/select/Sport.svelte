@@ -1,9 +1,16 @@
 <script lang="ts">
 	import { type Sport } from '@db/queries/types';
+	import { type SportType } from '@db/schema';
+
 	// Component props
 	export let sports: Sport[];
 	export let value: number = 0;
+	export let sportType: SportType | undefined = undefined;
 	// Component props
+
+	if (sportType) {
+		sports = sports.filter((sport) => sport.type === sportType);
+	}
 </script>
 
 <div class="col-span-3">

@@ -1,0 +1,19 @@
+---
+import { db } from '@db/config';
+import EventPage from '@src/components/forms/EventTeam.svelte';
+import Main from '@src/Layout.astro';
+import { CreateEventTeam } from '@src/lib/app/form/eventTeam';
+import '@src/styles/global.css';
+
+if (Astro.request.method === 'POST') return await CreateEventTeam(await Astro.request.formData());
+
+const sports = await db.query.sport.findMany();
+const championships = await db.query.championship.findMany();
+const teams = await db.query.team.findMany();
+const locations = await db.query.location.findMany();
+const ticketings = await db.query.ticketing.findMany();
+---
+
+<Main title="Nouvel Evenement">
+	<EventPage client:load {sports} {championships} {teams} {locations} {ticketings} />
+</Main>

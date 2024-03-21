@@ -1,0 +1,24 @@
+---
+import { db } from '@db/config';
+import { sport } from '@db/schema';
+import EventPage from '@src/components/forms/EventPlayer.svelte';
+import Main from '@src/Layout.astro';
+import { CreateEventPlayer } from '@src/lib/app/form/eventPlayer';
+import '@src/styles/global.css';
+import { eq } from 'drizzle-orm';
+
+// Handle POST request, create a new event
+if (Astro.request.method === 'POST') return await CreateEventPlayer(await Astro.request.formData());
+
+// Handle GET request
+const sports = await db.query.sport.findMany({ where: eq(sport.type, 'Individual') });
+const championships = await db.query.championship.findMany();
+const players = await db.query.player.findMany();
+const locations = await db.query.location.findMany();
+const ticketings = await db.query.ticketing.findMany();
+---
+
+<Main title="Evenement Individuel">
+	<EventPage client:load {sports} {championships} {players} {locations} {ticketings} />
+</Main>
+@src/lib/app/form/eventPlayer

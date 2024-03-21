@@ -1,18 +1,7 @@
 import { relations } from 'drizzle-orm';
-import {
-	serial,
-	text,
-	timestamp,
-	pgTable,
-	numeric,
-	integer,
-	pgEnum,
-	unique,
-	primaryKey,
-	uuid,
-	doublePrecision,
-} from 'drizzle-orm/pg-core';
+import { serial, text, timestamp, pgTable, numeric, integer, pgEnum, unique, uuid, doublePrecision } from 'drizzle-orm/pg-core';
 
+export type SportType = 'Team' | 'Individual' | 'Event';
 export const SportTypeEnum = pgEnum('sport_type', ['Team', 'Individual', 'Event']);
 
 export const location = pgTable('location', {
@@ -25,6 +14,7 @@ export const location = pgTable('location', {
 	zipcode: integer('zipcode').notNull(),
 	latitude: doublePrecision('latitude').notNull(),
 	longitude: doublePrecision('longitude').notNull(),
+	commonSports: integer('sports').array(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at'),
 });
@@ -45,7 +35,7 @@ export const championship = pgTable(
 		sportId: integer('sport_id')
 			.references(() => sport.id)
 			.notNull(),
-		iconSvg: text('icon').notNull(),
+		icon: text('icon').notNull(),
 		createdAt: timestamp('created_at').notNull().defaultNow(),
 		updatedAt: timestamp('updated_at'),
 	},
@@ -65,13 +55,55 @@ export const team = pgTable(
 		locationId: integer('location_id')
 			.references(() => location.id)
 			.notNull(),
-		iconSvg: text('icon').notNull(),
+		icon: text('icon').notNull(),
 		championships: integer('championships').array().notNull(),
 		createdAt: timestamp('created_at').notNull().defaultNow(),
 		updatedAt: timestamp('updated_at'),
 	},
 	(t) => ({
 		unq: unique().on(t.name, t.sportId),
+	})
+);
+
+export const player = pgTable(
+	'player',
+	{
+		id: serial('id').primaryKey(),
+		sportId: integer('sport_id'),
+		name: text('name').notNull().unique(),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at'),
+	},
+	(t) => ({
+		unq: unique().on(t.sportId, t.name),
+	})
+);
+
+export const eventPlayer = pgTable(
+	'event_player',
+	{
+		id: uuid('id').primaryKey().defaultRandom(),
+		championshipId: integer('championship_id')
+			.references(() => championship.id)
+			.notNull(),
+		player1: integer('player1_id')
+			.references(() => player.id)
+			.notNull(),
+		player2: integer('player2_id')
+			.references(() => player.id)
+			.notNull(),
+		eventDate: timestamp('event_date').notNull(),
+		locationId: integer('location_id')
+			.references(() => location.id)
+			.notNull(),
+		sportId: integer('sport_id')
+			.references(() => sport.id)
+			.notNull(),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at'),
+	},
+	(t) => ({
+		unq: unique().on(t.championshipId, t.sportId, t.player1, t.player2, t.eventDate),
 	})
 );
 
@@ -118,7 +150,7 @@ export const evenTeamRelation = relations(eventTeam, ({ many, one }) => ({
 export const ticketing = pgTable('ticketing', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
-	iconSvg: text('icon_svg').notNull().default(''),
+	icon: text('icon').notNull().default(''),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at'),
 });

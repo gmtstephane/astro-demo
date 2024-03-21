@@ -1,31 +1,9 @@
 {
-  "id": "0773faed-ab25-4765-b2c0-22e1e27b02a5",
+  "id": "125a5376-783b-41a5-bfae-9fc65e1a3fbb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
-    "event_type": {
-      "name": "event_type",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "sport_type": {
-          "name": "sport_type",
-          "type": "sport_type",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "championship": {
       "name": "championship",
       "schema": "",
@@ -99,6 +77,150 @@
           "columns": [
             "id",
             "name"
+          ]
+        }
+      }
+    },
+    "event_player": {
+      "name": "event_player",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "championship_id": {
+          "name": "championship_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "player1_id": {
+          "name": "player1_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "player2_id": {
+          "name": "player2_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_date": {
+          "name": "event_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location_id": {
+          "name": "location_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sport_id": {
+          "name": "sport_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "event_player_championship_id_championship_id_fk": {
+          "name": "event_player_championship_id_championship_id_fk",
+          "tableFrom": "event_player",
+          "tableTo": "championship",
+          "columnsFrom": [
+            "championship_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "event_player_player1_id_player_id_fk": {
+          "name": "event_player_player1_id_player_id_fk",
+          "tableFrom": "event_player",
+          "tableTo": "player",
+          "columnsFrom": [
+            "player1_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "event_player_player2_id_player_id_fk": {
+          "name": "event_player_player2_id_player_id_fk",
+          "tableFrom": "event_player",
+          "tableTo": "player",
+          "columnsFrom": [
+            "player2_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "event_player_location_id_location_id_fk": {
+          "name": "event_player_location_id_location_id_fk",
+          "tableFrom": "event_player",
+          "tableTo": "location",
+          "columnsFrom": [
+            "location_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "event_player_sport_id_sport_id_fk": {
+          "name": "event_player_sport_id_sport_id_fk",
+          "tableFrom": "event_player",
+          "tableTo": "sport",
+          "columnsFrom": [
+            "sport_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "event_player_championship_id_sport_id_player1_id_player2_id_event_date_unique": {
+          "name": "event_player_championship_id_sport_id_player1_id_player2_id_event_date_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "championship_id",
+            "sport_id",
+            "player1_id",
+            "player2_id",
+            "event_date"
           ]
         }
       }
@@ -246,6 +368,28 @@
         }
       }
     },
+    "event_type": {
+      "name": "event_type",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sport_type": {
+          "name": "sport_type",
+          "type": "sport_type",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "location": {
       "name": "location",
       "schema": "",
@@ -304,6 +448,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "sports": {
+          "name": "sports",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -326,6 +476,63 @@
           "name": "location_name_unique",
           "nullsNotDistinct": false,
           "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "player": {
+      "name": "player",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sport_id": {
+          "name": "sport_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "player_name_unique": {
+          "name": "player_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        },
+        "player_sport_id_name_unique": {
+          "name": "player_sport_id_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sport_id",
             "name"
           ]
         }
@@ -565,8 +772,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "icon_svg": {
-          "name": "icon_svg",
+        "icon": {
+          "name": "icon",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
