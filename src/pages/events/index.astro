@@ -1,0 +1,15 @@
+---
+import { GetEventUnion } from '@db/queries/EventList';
+import { IsAcceptJson } from '@src/lib/app/app';
+import type { APIRoute } from 'astro';
+import Main from '@src/Layout.astro';
+import Table from '@src/components/tables/Events.svelte';
+const events = await GetEventUnion();
+import '@src/styles/global.css';
+
+if (IsAcceptJson(Astro.request)) return new Response(JSON.stringify(e), { status: 200 });
+---
+
+<Main title="">
+	<Table client:load {events} />
+</Main>

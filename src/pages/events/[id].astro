@@ -12,12 +12,14 @@ import { eq } from 'drizzle-orm';
 import { ticket } from '@db/schema';
 import { IsCreateRessource, IsUpdateRessource } from '@src/lib/app/app';
 import Notification from '@src/components/forms/Notification.svelte';
+import { UpdateEvent } from '@src/lib/app/form/update';
 
 const { id } = Astro.params;
 if (!id) return new Response(null, { status: 400 });
 
-if (Astro.request.method === 'POST') return await UpdateEvent(await Astro.request.formData(), id);
-
+if (Astro.request.method === 'POST') {
+	return await UpdateEvent(await Astro.request.formData(), id);
+}
 const isUpdate = IsUpdateRessource(Astro.url);
 const isCreate = IsCreateRessource(Astro.url);
 

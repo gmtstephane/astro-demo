@@ -11,7 +11,12 @@
 - [x] Client notification
 - [x] Make form responsive for mobile
 #### Vendredi matin
-- [ ] Rechercher les evenements
+- [x] Rechercher les evenements
+  - [x] Table des evenements
+  - [x] Filtres
+  - [x] Pagination
+  - [ ] Make table responsive
+
 #### Vendredi après-midi
 - [ ] mobile les /events
 - [ ] mobile les /events/:id
@@ -26,6 +31,7 @@
 
 
 ### Backlog 
+- [ ] Reset postgres index after manual id insertion 
 - [ ] Ajouter un bouton pour se deconnecter
 - [ ] Ajouter un bouton pour se connecter
 - [ ] Formulaire creation Billeterie

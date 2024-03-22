@@ -7,3 +7,7 @@ export function IsUpdateRessource(u: URL): boolean {
 export function IsCreateRessource(u: URL): boolean {
 	return u.searchParams.get('create') === 'true';
 }
+
+export function IsAcceptJson(request: Request): boolean {
+	return request.headers.get('accept') === 'application/json';
+}

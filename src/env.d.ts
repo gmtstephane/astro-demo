@@ -15,4 +15,15 @@ declare global {
 			user: User;
 		}
 	}
+	declare namespace svelteHTML {
+		interface HTMLAttributes<T> {
+			'on:click_outside'?: CompositionEventHandler;
+		}
+	}
+}
+
+declare namespace svelteHTML {
+	interface HTMLAttributes<T> {
+		'on:click_outside'?: CompositionEventHandler;
+	}
 }

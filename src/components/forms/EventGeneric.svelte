@@ -27,9 +27,9 @@
 	<Header Title="Evenement" Description="Information sur l'evenement" />
 	<TextForm name="name" label="Nom de l'evenement" bind:value={name} />
 	<ImageForm value={defaultValues?.icon} name="image" />
-	<SelectSport bind:value={sport} {sports} sportType={'Individual'} />
+	<SelectSport bind:value={sport} {sports} sportType={'Event'} />
 	{#key sport}
-		<SelectLocation bind:value={location} {locations} {sport} />
+		<SelectLocation bind:value={location} {locations} />
 	{/key}
 	<SelectDate bind:value={date} />
 	<Header Title="Billets" Description="Information sur les billets" />

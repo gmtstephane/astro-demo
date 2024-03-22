@@ -18,7 +18,7 @@ import type { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 import * as schema from '@db/schema';
 
 export type dbTx = PgTransaction<NodePgQueryResultHKT, typeof schema, ExtractTablesWithRelations<typeof schema>>;
-
+export type EventType = 'Team' | 'Individual' | 'Event';
 export type Sport = InferSelectModel<typeof sport>;
 export type Location = InferSelectModel<typeof location>;
 export type Championship = InferSelectModel<typeof championship>;
@@ -41,6 +41,18 @@ export type CreateEventGeneric = InferInsertModel<typeof eventGeneric>;
 
 export type CreateUser = InferInsertModel<typeof user>;
 export type User = InferSelectModel<typeof user>;
+
+export type EventDescription = {
+	id: string;
+	name: string;
+	championship: string;
+	icon: string;
+	location: string;
+	sport: string;
+	type: EventType;
+	min_price: number;
+	date: Date;
+};
 
 export function isEventTeam(event: Event): event is EventTeam {
 	return (event as EventTeam).awayTeamId !== undefined && (event as EventTeam).homeTeamId !== undefined;
