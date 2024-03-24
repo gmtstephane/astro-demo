@@ -56,7 +56,7 @@ export namespace Google {
 				email: body.email,
 				familyName: body.family_name,
 				givenName: body.given_name,
-				locale: body.locale,
+				locale: body.locale || 'fr',
 				name: body.name,
 				picture: body.picture,
 				provider: 'Google',
