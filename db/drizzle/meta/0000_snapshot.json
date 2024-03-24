@@ -1,5 +1,5 @@
 {
-  "id": "debcba7e-a290-42c7-a479-b6c38d72ee9d",
+  "id": "03230119-714d-4f1f-b4d6-207a6a02bd08",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -718,8 +718,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "championships": {
-          "name": "championships",
+        "championships_id": {
+          "name": "championships_id",
           "type": "integer[]",
           "primaryKey": false,
           "notNull": true

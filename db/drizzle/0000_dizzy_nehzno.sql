@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS "team" (
 	"sport_id" integer NOT NULL,
 	"location_id" integer NOT NULL,
 	"icon" text NOT NULL,
-	"championships" integer[] NOT NULL,
+	"championships_id" integer[] NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp,
 	CONSTRAINT "team_name_unique" UNIQUE("name"),

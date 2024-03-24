@@ -3,30 +3,30 @@
 ### Things to be done
 
 #### Mardi soir
-- [x] Authentification application web
+- [x] [web] Authentification application 
 #### Mercredi soir 
-- [x] Authentification application native
+- [x] [web] [mobile] Authentification application native
 #### Jeudi soir
-- [x] Update Events  + tickets
-- [x] Client notification
-- [x] Make form responsive for mobile
+- [x] [web] Update Events  + tickets
+- [x] [web] Client notification
+- [x] [web] Make form responsive for mobile
 #### Vendredi matin
-- [x] Rechercher les evenements
-  - [x] Table des evenements
-  - [x] Filtres
-  - [x] Pagination
-  - [x] Make table responsive
+- [x] [web] - Rechercher les evenements
+  - [x] [web] - Table des evenements
+  - [x] [web] - Filtres
+  - [x] [web] - Pagination
+  - [x] [web] - Make table responsive
 #### Vendredi après-midi
-- [x] mobile /events
-- [x] mobile /events/:id
+- [x] [mobile] /events
+- [x] [mobile] /events/:id
 #### Samedi matin
-- [ ] mobile  /locations/:id
-- [ ] mobile  /teams/:id
+- [ ] [mobile]  /teams/:id
+- [ ] [mobile]  /locations/:id
 #### Samedi après-midi
-- [ ] mobile carte /locations
-- [ ] gestion des preferences
+- [ ] [mobile] carte /locations
+- [ ] [mobile] gestion des preferences
 
-
+ 
 ### Backlog 
 - [ ] Reset postgres index after manual id insertion 
 - [ ] Ajouter un bouton pour se deconnecter

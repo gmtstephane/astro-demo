@@ -44,6 +44,11 @@ export const championship = pgTable(
 	})
 );
 
+export const championshipRelations = relations(championship, ({ many, one }) => ({
+	// eventPlayer: many(eventPlayer),
+	eventTeam: many(eventTeam),
+}));
+
 export const team = pgTable(
 	'team',
 	{
@@ -56,7 +61,7 @@ export const team = pgTable(
 			.references(() => location.id)
 			.notNull(),
 		icon: text('icon').notNull(),
-		championships: integer('championships').array().notNull(),
+		championshipsId: integer('championships_id').array().notNull(),
 		createdAt: timestamp('created_at').notNull().defaultNow(),
 		updatedAt: timestamp('updated_at'),
 	},
@@ -64,6 +69,24 @@ export const team = pgTable(
 		unq: unique().on(t.name, t.sportId),
 	})
 );
+
+export const teamRelations = relations(team, ({ many, one }) => ({
+	sport: one(sport, {
+		fields: [team.sportId],
+		references: [sport.id],
+	}),
+	location: one(location, {
+		fields: [team.locationId],
+		references: [location.id],
+	}),
+	championships: many(championship),
+	homeEvents: many(eventTeam, {
+		relationName: 'homeTeam',
+	}),
+	awayEvents: many(eventTeam, {
+		relationName: 'awayTeam',
+	}),
+}));
 
 export const player = pgTable(
 	'player',
@@ -196,6 +219,7 @@ export const evenTeamRelation = relations(eventTeam, ({ many, one }) => ({
 	tickets: many(ticket),
 	homeTeam: one(team, {
 		fields: [eventTeam.homeTeamId],
+		relationName: 'homeTeam',
 		references: [team.id],
 	}),
 	location: one(location, {
@@ -212,6 +236,7 @@ export const evenTeamRelation = relations(eventTeam, ({ many, one }) => ({
 	}),
 	awayTeam: one(team, {
 		fields: [eventTeam.awayTeamId],
+		relationName: 'awayTeam',
 		references: [team.id],
 	}),
 }));

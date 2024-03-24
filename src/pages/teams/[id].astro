@@ -1,0 +1,12 @@
+---
+import { GetTeam } from '@db/queries/Team';
+import '@src/styles/global.css';
+
+const { id } = Astro.params;
+if (!id) return new Response(null, { status: 400 });
+
+const event = await GetTeam(Number(id));
+if (!event) return new Response(null, { status: 404 });
+
+return new Response(JSON.stringify(event), { status: 200, headers: { 'Content-Type': 'application/json' } });
+---

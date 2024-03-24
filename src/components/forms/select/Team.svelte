@@ -7,7 +7,7 @@
 	export let value: number = 0;
 	export let name: string = 'team';
 	export let label = 'Team';
-	let TeamsByChampioniships = teams.filter((team) => team.championships.some((c) => c === championship));
+	let TeamsByChampioniships = teams.filter((team) => team.championshipsId.some((c) => c === championship));
 </script>
 
 <div class="col-span-full sm:col-span-3">
