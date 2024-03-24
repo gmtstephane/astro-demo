@@ -1,10 +1,10 @@
 import { db } from '@db/config';
 import { championship, eventGeneric, eventPlayer, eventTeam, eventType, location, player, sport, team, ticket } from '@db/schema';
 import type { EventDescription } from '@db/types';
-import { eq, gt, gte, sql } from 'drizzle-orm';
+import { and, eq, gt, gte, inArray, sql } from 'drizzle-orm';
 import { alias, unionAll } from 'drizzle-orm/pg-core';
 
-export async function GetEventUnion(): Promise<EventDescription[]> {
+export async function GetEventUnion(ids: string[]): Promise<EventDescription[]> {
 	const homeTeam = alias(team, 'hometeam');
 	const awayTeam = alias(team, 'awayteam');
 
@@ -18,7 +18,7 @@ export async function GetEventUnion(): Promise<EventDescription[]> {
 			.groupBy(ticket.eventId)
 	);
 
-	const eventTeamRequest = db
+	let eventTeamRequest = db
 		.with(lowerPriceTicket)
 		.select({
 			id: eventTeam.id,
@@ -38,8 +38,14 @@ export async function GetEventUnion(): Promise<EventDescription[]> {
 		.innerJoin(homeTeam, eq(homeTeam.id, eventTeam.homeTeamId))
 		.innerJoin(championship, eq(championship.id, eventTeam.championshipId))
 		.innerJoin(awayTeam, eq(awayTeam.id, eventTeam.awayTeamId))
-		.leftJoin(lowerPriceTicket, eq(eventTeam.id, lowerPriceTicket.event_id))
-		.where(gte(eventTeam.eventDate, new Date()));
+		.leftJoin(lowerPriceTicket, eq(eventTeam.id, lowerPriceTicket.event_id));
+	// .where(gte(eventTeam.eventDate, new Date()))
+
+	if (ids.length > 0) {
+		eventTeamRequest.where(and(gte(eventTeam.eventDate, new Date()), inArray(eventTeam.id, ids)));
+	} else {
+		eventTeamRequest.where(gte(eventTeam.eventDate, new Date()));
+	}
 
 	const player1 = alias(player, 'player1');
 	const player2 = alias(player, 'player2');
@@ -64,8 +70,14 @@ export async function GetEventUnion(): Promise<EventDescription[]> {
 		.innerJoin(player1, eq(player1.id, eventPlayer.player1))
 		.innerJoin(player2, eq(player2.id, eventPlayer.player2))
 		.innerJoin(championship, eq(championship.id, eventPlayer.championshipId))
-		.leftJoin(lowerPriceTicket, eq(eventPlayer.id, lowerPriceTicket.event_id))
-		.where(gte(eventPlayer.eventDate, new Date()));
+		.leftJoin(lowerPriceTicket, eq(eventPlayer.id, lowerPriceTicket.event_id));
+	// .where(gte(eventPlayer.eventDate, new Date()));
+
+	if (ids.length > 0) {
+		eventPlayerRequest.where(and(gte(eventPlayer.eventDate, new Date()), inArray(eventPlayer.id, ids)));
+	} else {
+		eventPlayerRequest.where(gte(eventPlayer.eventDate, new Date()));
+	}
 
 	const eventGenericRequest = db
 		.with(lowerPriceTicket)
@@ -84,8 +96,14 @@ export async function GetEventUnion(): Promise<EventDescription[]> {
 		.innerJoin(location, eq(eventGeneric.locationId, location.id))
 		.innerJoin(sport, eq(eventGeneric.sportId, sport.id))
 		.innerJoin(eventType, eq(eventGeneric.id, eventType.eventid))
-		.leftJoin(lowerPriceTicket, eq(eventGeneric.id, lowerPriceTicket.event_id))
-		.where(gte(eventGeneric.eventDate, new Date()));
+		.leftJoin(lowerPriceTicket, eq(eventGeneric.id, lowerPriceTicket.event_id));
+	// .where(gte(eventGeneric.eventDate, new Date()));
+
+	if (ids.length > 0) {
+		eventGenericRequest.where(and(gte(eventGeneric.eventDate, new Date()), inArray(eventGeneric.id, ids)));
+	} else {
+		eventGenericRequest.where(gte(eventGeneric.eventDate, new Date()));
+	}
 
 	return unionAll(eventPlayerRequest, eventTeamRequest, eventGenericRequest).orderBy(eventGeneric.eventDate);
 }

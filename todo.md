@@ -19,18 +19,18 @@
 #### Vendredi après-midi
 - [x] [mobile] /events
 - [x] [mobile] /events/:id
-#### Samedi matin
-- [ ] [mobile]  /teams/:id
+#### Dimanche matin
+- [x] [mobile]  /teams/:id
 - [ ] [mobile]  /locations/:id
-#### Samedi après-midi
+#### Dimanche après-midi
 - [ ] [mobile] carte /locations
-- [ ] [mobile] gestion des preferences
+- [x] [mobile] gestion des preferences
 
  
 ### Backlog 
-- [ ] Reset postgres index after manual id insertion 
+- [ ] [web] Reset postgres index after manual id insertion 
 - [ ] Ajouter un bouton pour se deconnecter
 - [ ] Ajouter un bouton pour se connecter
-- [ ] Formulaire creation Billeterie
-- [ ] Formulaire creation Joueur 
-- [ ] Ajouter les drapeaux des pays pour les joueurs
+- [ ] [web] Formulaire creation Billeterie
+- [ ] [web] Formulaire creation Joueur 
+- [ ] [web] Ajouter les drapeaux des pays pour les joueurs
