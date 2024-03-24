@@ -15,11 +15,10 @@
   - [x] Table des evenements
   - [x] Filtres
   - [x] Pagination
-  - [ ] Make table responsive
-
+  - [x] Make table responsive
 #### Vendredi après-midi
-- [ ] mobile les /events
-- [ ] mobile les /events/:id
+- [x] mobile /events
+- [x] mobile /events/:id
 #### Samedi matin
 - [ ] mobile  /locations/:id
 - [ ] mobile  /teams/:id
@@ -28,11 +27,10 @@
 - [ ] gestion des preferences
 
 
-
-
 ### Backlog 
 - [ ] Reset postgres index after manual id insertion 
 - [ ] Ajouter un bouton pour se deconnecter
 - [ ] Ajouter un bouton pour se connecter
 - [ ] Formulaire creation Billeterie
 - [ ] Formulaire creation Joueur 
+- [ ] Ajouter les drapeaux des pays pour les joueurs

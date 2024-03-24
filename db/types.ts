@@ -30,10 +30,33 @@ export type CreateTicket = InferInsertModel<typeof ticket>;
 export type Ticketing = InferSelectModel<typeof ticketing>;
 
 export type EventTeam = InferSelectModel<typeof eventTeam>;
+export type FullEventTeam = EventTeam & {
+	homeTeam: Team;
+	awayTeam: Team;
+	tickets: Ticket[];
+	championship: Championship;
+	location: Location;
+	sport: Sport;
+};
+
 export type EventPlayer = InferSelectModel<typeof eventPlayer>;
+export type FullEventPlayer = EventPlayer & {
+	player1: Player;
+	player2: Player;
+	tickets: Ticket[];
+	championship: Championship;
+	location: Location;
+	sport: Sport;
+};
 export type EventGeneric = InferSelectModel<typeof eventGeneric>;
+export type FullEventGeneric = EventGeneric & {
+	tickets: Ticket[];
+	location: Location;
+	sport: Sport;
+};
 
 export type Event = EventTeam | EventPlayer | EventGeneric;
+export type FullEvent = FullEventTeam | FullEventPlayer | FullEventGeneric;
 
 export type CreateEventTeam = InferInsertModel<typeof eventTeam>;
 export type CreateEventPlayer = InferInsertModel<typeof eventPlayer>;

@@ -107,6 +107,30 @@ export const eventPlayer = pgTable(
 	})
 );
 
+export const eventPlayerRelation = relations(eventPlayer, ({ many, one }) => ({
+	tickets: many(ticket),
+	player1: one(player, {
+		fields: [eventPlayer.player1],
+		references: [player.id],
+	}),
+	player2: one(player, {
+		fields: [eventPlayer.player2],
+		references: [player.id],
+	}),
+	location: one(location, {
+		fields: [eventPlayer.locationId],
+		references: [location.id],
+	}),
+	sport: one(sport, {
+		fields: [eventPlayer.sportId],
+		references: [sport.id],
+	}),
+	championship: one(championship, {
+		fields: [eventPlayer.championshipId],
+		references: [championship.id],
+	}),
+}));
+
 export const eventGeneric = pgTable(
 	'event_generic',
 	{
@@ -127,6 +151,18 @@ export const eventGeneric = pgTable(
 		unq: unique().on(t.name, t.sportId, t.eventDate),
 	})
 );
+
+export const eventGenericRelation = relations(eventGeneric, ({ many, one }) => ({
+	tickets: many(ticket),
+	location: one(location, {
+		fields: [eventGeneric.locationId],
+		references: [location.id],
+	}),
+	sport: one(sport, {
+		fields: [eventGeneric.sportId],
+		references: [sport.id],
+	}),
+}));
 
 export const eventTeam = pgTable(
 	'event_team',
@@ -162,6 +198,18 @@ export const evenTeamRelation = relations(eventTeam, ({ many, one }) => ({
 		fields: [eventTeam.homeTeamId],
 		references: [team.id],
 	}),
+	location: one(location, {
+		fields: [eventTeam.locationId],
+		references: [location.id],
+	}),
+	sport: one(sport, {
+		fields: [eventTeam.sportId],
+		references: [sport.id],
+	}),
+	championship: one(championship, {
+		fields: [eventTeam.championshipId],
+		references: [championship.id],
+	}),
 	awayTeam: one(team, {
 		fields: [eventTeam.awayTeamId],
 		references: [team.id],
@@ -194,9 +242,21 @@ export const ticket = pgTable('event_ticket', {
 });
 
 export const ticketsRelation = relations(ticket, ({ one }) => ({
+	ticketing: one(ticketing, {
+		fields: [ticket.ticketingId],
+		references: [ticketing.id],
+	}),
 	eventTeam: one(eventTeam, {
 		fields: [ticket.eventId],
 		references: [eventTeam.id],
+	}),
+	eventPlayer: one(eventPlayer, {
+		fields: [ticket.eventId],
+		references: [eventPlayer.id],
+	}),
+	eventGeneric: one(eventGeneric, {
+		fields: [ticket.eventId],
+		references: [eventGeneric.id],
 	}),
 }));
 

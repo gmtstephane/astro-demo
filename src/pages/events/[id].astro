@@ -10,7 +10,7 @@ import { db } from '@db/config';
 import '@src/styles/global.css';
 import { eq } from 'drizzle-orm';
 import { ticket } from '@db/schema';
-import { IsCreateRessource, IsUpdateRessource } from '@src/lib/app/app';
+import { IsAcceptJson, IsCreateRessource, IsUpdateRessource } from '@src/lib/app/app';
 import Notification from '@src/components/forms/Notification.svelte';
 import { UpdateEvent } from '@src/lib/app/form/update';
 
@@ -26,33 +26,40 @@ const isCreate = IsCreateRessource(Astro.url);
 const event = await GetEvent(id);
 if (!event) return new Response(null, { status: 404 });
 
-//add one hour to the date to avoid the bug of the date picker
-event.eventDate.setHours(event.eventDate.getHours() + 1);
-const sports = await db.query.sport.findMany();
-const locations = await db.query.location.findMany();
-const ticketings = await db.query.ticketing.findMany();
-const championships = await db.query.championship.findMany();
-const teams = await db.query.team.findMany();
-const players = await db.query.player.findMany();
-const tickets = await db.query.ticket.findMany({ where: eq(ticket.eventId, event.id) });
----
+// if (IsAcceptJson(Astro.request)) {
+// 	return new Response(JSON.stringify(event), { status: 200, headers: { 'Content-Type': 'application/json' } });
+// }
 
-<Main title="Evenement">
-	<!-- {isEventTeam(event) && <>EventTeam</>} -->
-	{
-		(isUpdate || isCreate) && (
-			<Notification title="Modification effectuée" description="Les modifications ont bien été prises en compte" />
-		)
-	}
-	{
-		isEventTeam(event) && (
-			<EventTeam client:load {sports} {championships} {teams} {locations} {ticketings} defaultValues={event} {tickets} />
-		)
-	}
-	{
-		isEventPlayer(event) && (
-			<EventPlayer client:load {sports} {championships} {players} {locations} {ticketings} defaultValues={event} {tickets} />
-		)
-	}
-	{isEventGeneric(event) && <EventGeneric client:load {sports} {locations} {ticketings} {tickets} defaultValues={event} />}
-</Main>
+return new Response(JSON.stringify(event), { status: 200, headers: { 'Content-Type': 'application/json' } });
+//add one hour to the date to avoid the bug of the date picker
+// event.eventDate.setHours(event.eventDate.getHours() + 1);
+
+// const sports = await db.query.sport.findMany();
+// const locations = await db.query.location.findMany();
+// const ticketings = await db.query.ticketing.findMany();
+// const championships = await db.query.championship.findMany();
+// const teams = await db.query.team.findMany();
+// const players = await db.query.player.findMany();
+// const tickets = await db.query.ticket.findMany({ where: eq(ticket.eventId, event.id) });
+// ---
+
+// <Main title="Evenement">
+// 	<!-- {isEventTeam(event) && <>EventTeam</>} -->
+// 	{
+// 		(isUpdate || isCreate) && (
+// 			<Notification title="Modification effectuée" description="Les modifications ont bien été prises en compte" />
+// 		)
+// 	}
+// 	{
+// 		isEventTeam(event) && (
+// 			<EventTeam client:load {sports} {championships} {teams} {locations} {ticketings} defaultValues={event} {tickets} />
+// 		)
+// 	}
+// 	{
+// 		isEventPlayer(event) && (
+// 			<EventPlayer client:load {sports} {championships} {players} {locations} {ticketings} defaultValues={event} {tickets} />
+// 		)
+// 	}
+// 	{isEventGeneric(event) && <EventGeneric client:load {sports} {locations} {ticketings} {tickets} defaultValues={event} />}
+// </Main>
+---

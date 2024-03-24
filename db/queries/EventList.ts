@@ -72,7 +72,7 @@ export async function GetEventUnion(): Promise<EventDescription[]> {
 		.select({
 			id: eventGeneric.id,
 			name: eventGeneric.name,
-			championship: sql<string>`null`,
+			championship: sport.name,
 			icon: eventGeneric.icon,
 			location: location.name,
 			sport: sport.name,
