@@ -29,8 +29,8 @@
  
 ### Backlog 
 - [ ] [web] Reset postgres index after manual id insertion 
-- [ ] Ajouter un bouton pour se deconnecter
-- [ ] Ajouter un bouton pour se connecter
+- [x] Ajouter un bouton pour se deconnecter
+- [x] Ajouter un bouton pour se connecter
 - [ ] [web] Formulaire creation Billeterie
 - [ ] [web] Formulaire creation Joueur 
 - [ ] [web] Ajouter les drapeaux des pays pour les joueurs

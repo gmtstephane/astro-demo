@@ -35,3 +35,8 @@ export const createEventGenericSchema = z.object({
 	date: z.date(),
 	// tickets: z.array(ticketSchema),
 });
+
+export const createTicketing = z.object({
+	name: z.string(),
+	image: z.string(),
+});

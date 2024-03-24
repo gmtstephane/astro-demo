@@ -1,0 +1,13 @@
+---
+import Layout from '@src/Layout.astro';
+import Ticketing from '@src/components/forms/Ticketing.svelte';
+import { CreateTicketing } from '@src/lib/app/form/ticketing';
+
+if (Astro.request.method === 'POST') {
+	return await CreateTicketing(await Astro.request.formData());
+}
+---
+
+<Layout title="Nouvelle Billeterie">
+	<Ticketing client:load />
+</Layout>

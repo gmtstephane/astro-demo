@@ -79,7 +79,7 @@ export const teamRelations = relations(team, ({ many, one }) => ({
 		fields: [team.locationId],
 		references: [location.id],
 	}),
-	championships: many(championship),
+	// championships: many(championship),
 	homeEvents: many(eventTeam, {
 		relationName: 'homeTeam',
 	}),
