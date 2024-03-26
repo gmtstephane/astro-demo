@@ -7,9 +7,9 @@ import Table from '@src/components/tables/Events.svelte';
 
 const search_ids = Astro.url.searchParams.getAll('id[]');
 
-console.log(Astro.url);
 const events = await GetEventUnion(search_ids);
 
+console.log(events[0]);
 if (IsAcceptJson(Astro.request)) {
 	return new Response(JSON.stringify(events), { status: 200, headers: { 'Content-Type': 'application/json' } });
 }

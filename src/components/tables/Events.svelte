@@ -67,7 +67,6 @@
 						tabindex="-1"
 					>
 						<div class="py-1" role="none">
-							<!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
 							<a
 								href="/events/new/team"
 								class="text-gray-700 block px-4 py-2 text-sm"
@@ -121,7 +120,7 @@
 						{#each displayEvents as event}
 							<tr>
 								<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-									<img src={event.icon} alt={event.name} class="h-8 w-8" />
+									<img src={event.icon} alt={event.name} class="h-8 aspect-square object-contain" />
 								</td>
 								<td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{event.name}</td>
 								<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden xl:table-cell">{event.location}</td>

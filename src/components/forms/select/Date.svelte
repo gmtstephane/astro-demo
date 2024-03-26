@@ -4,10 +4,18 @@
 	// Convert the Date object to a local datetime string in the format YYYY-MM-DDTHH:MM
 	let datetimeLocalString = value.toISOString().slice(0, 16);
 
-	// React to changes in the input and update the original Date object, if needed.
+	// Function to check if a date string is valid
+	const isValidDate = (dateStr: string): boolean => {
+		const date = new Date(dateStr);
+		return !isNaN(date.getTime());
+	};
+
+	// React to changes in the input and update the original Date object, if the new value is valid.
 	$: if (datetimeLocalString !== value.toISOString().slice(0, 16)) {
-		// Parse the string back to a Date object, considering browser might not handle timezone correctly.
-		value = new Date(datetimeLocalString);
+		if (isValidDate(datetimeLocalString)) {
+			// Parse the string back to a Date object, considering browser might not handle timezone correctly.
+			value = new Date(datetimeLocalString);
+		}
 	}
 </script>
 
