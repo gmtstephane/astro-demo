@@ -1,11 +1,11 @@
 ---
-import { db } from '@db/config';
-import { ticketing } from '@db/schema';
-import Layout from '@src/Layout.astro';
-import { eq } from 'drizzle-orm';
-import Ticketing from '@src/components/forms/Ticketing.svelte';
-import { IsCreateRessource, IsUpdateRessource } from '@src/lib/app/app';
-import Notification from '@src/components/forms/Notification.svelte';
+import { db } from "@db/config";
+import { ticketing } from "@db/schema";
+import Layout from "@src/Layout.astro";
+import { eq } from "drizzle-orm";
+import Ticketing from "@src/components/forms/Ticketing.svelte";
+import { IsCreateRessource, IsUpdateRessource } from "@src/lib/app/app";
+import Notification from "@src/components/forms/Notification.svelte";
 
 const { id } = Astro.params;
 if (!id) return new Response(null, { status: 400 });
@@ -21,7 +21,10 @@ const t = await db.query.ticketing.findFirst({
 <Layout title="Nouvelle Billeterie">
 	{
 		(isUpdate || isCreate) && (
-			<Notification title="Modification effectuée" description="Les modifications ont bien été prises en compte" />
+			<Notification
+				title="Modification effectuée"
+				description="Les modifications ont bien été prises en compte"
+			/>
 		)
 	}
 	<Ticketing client:load defaultValue={t} />

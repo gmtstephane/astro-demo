@@ -1,12 +1,19 @@
 import { relations } from 'drizzle-orm';
-import { serial, text, timestamp, pgTable, numeric, integer, pgEnum, unique, uuid, doublePrecision } from 'drizzle-orm/pg-core';
+import { serial, text, timestamp, pgTable, numeric, integer, pgEnum, unique, uuid, doublePrecision, varchar } from 'drizzle-orm/pg-core';
 
 export type SportType = 'Team' | 'Individual' | 'Event';
 export const SportTypeEnum = pgEnum('sport_type', ['Team', 'Individual', 'Event']);
 
+export const country = pgTable('country', {
+	countryCode: varchar('country_code', { length: 2 }).primaryKey(),
+	icon: text('icon').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at'),
+});
+
 export const location = pgTable('location', {
 	id: serial('id').primaryKey(),
-	name: text('name').notNull().unique(),
+	name: text('name').notNull(),
 	address: text('address').notNull(),
 	city: text('city').notNull(),
 	state: text('state').notNull(),

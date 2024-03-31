@@ -28,4 +28,3 @@
 		bind:value={datetimeLocalString}
 	/>
 </div>
-#5E81AC

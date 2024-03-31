@@ -1,6 +1,6 @@
 {
-  "id": "4504c7d6-361f-44a9-b87d-1c794f448805",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "612a4031-daa6-44b0-b1d5-7613e3353d22",
+  "prevId": "4504c7d6-361f-44a9-b87d-1c794f448805",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -80,6 +80,41 @@
           ]
         }
       }
+    },
+    "country": {
+      "name": "country",
+      "schema": "",
+      "columns": {
+        "country_code": {
+          "name": "country_code",
+          "type": "varchar(2)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "icon": {
+          "name": "icon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "event_generic": {
       "name": "event_generic",

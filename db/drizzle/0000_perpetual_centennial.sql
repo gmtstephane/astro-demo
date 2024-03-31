@@ -82,8 +82,7 @@ CREATE TABLE IF NOT EXISTS "location" (
 	"longitude" double precision NOT NULL,
 	"sports" integer[],
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp,
-	CONSTRAINT "location_name_unique" UNIQUE("name")
+	"updated_at" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "player" (
