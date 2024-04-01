@@ -99,8 +99,9 @@ export const player = pgTable(
 	'player',
 	{
 		id: serial('id').primaryKey(),
-		sportId: integer('sport_id'),
+		sportId: integer('sport_id').notNull(),
 		name: text('name').notNull().unique(),
+		countryCode: varchar('country_code', { length: 2 }).notNull(),
 		createdAt: timestamp('created_at').notNull().defaultNow(),
 		updatedAt: timestamp('updated_at'),
 	},
@@ -108,6 +109,13 @@ export const player = pgTable(
 		unq: unique().on(t.sportId, t.name),
 	})
 );
+
+export const playerRelation = relations(player, ({ one }) => ({
+	country: one(country, {
+		fields: [player.countryCode],
+		references: [country.countryCode],
+	}),
+}));
 
 export const eventPlayer = pgTable(
 	'event_player',

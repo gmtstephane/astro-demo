@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { type Player, type Team } from '@db/types';
+	import { type Player, type Team } from "@db/types";
 
 	// Component props
 	export let sport: number;
 	export let players: Player[];
 	export let value: number = 0;
-	export let name: string = 'player';
-	export let label = 'Player';
+	export let name: string = "player";
+	export let label = "Player";
 	let PlayersBySport = players.filter((p) => p.sportId === sport);
 </script>
 

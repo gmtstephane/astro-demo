@@ -15,6 +15,13 @@
       "when": 1711903454414,
       "tag": "0001_busy_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1711918671997,
+      "tag": "0002_minor_wrecker",
+      "breakpoints": true
     }
   ]
 }

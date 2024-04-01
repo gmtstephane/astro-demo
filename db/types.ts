@@ -3,6 +3,7 @@ import {
 	eventGeneric,
 	eventPlayer,
 	eventTeam,
+	country,
 	location,
 	player,
 	sport,
@@ -39,10 +40,14 @@ export type FullEventTeam = EventTeam & {
 	sport: Sport;
 };
 
+export type CoutryCode = InferSelectModel<typeof country>
+export type PlayerWithCountry = Player & {
+	country: CoutryCode;
+}
 export type EventPlayer = InferSelectModel<typeof eventPlayer>;
 export type FullEventPlayer = EventPlayer & {
-	player1: Player;
-	player2: Player;
+	player1: PlayerWithCountry;
+	player2: PlayerWithCountry;
 	tickets: Ticket[];
 	championship: Championship;
 	location: Location;

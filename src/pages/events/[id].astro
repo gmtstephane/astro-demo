@@ -1,23 +1,27 @@
 ---
-import { isEventGeneric, isEventPlayer, isEventTeam } from '@db/types';
-import Main from '@src/Layout.astro';
-import { GetEvent } from '@db/queries/Event';
-import EventGeneric from '@src/components/forms/EventGeneric.svelte';
-import EventPlayer from '@src/components/forms/EventPlayer.svelte';
-import EventTeam from '@src/components/forms/EventTeam.svelte';
+import { isEventGeneric, isEventPlayer, isEventTeam } from "@db/types";
+import Main from "@src/Layout.astro";
+import { GetEvent } from "@db/queries/Event";
+import EventGeneric from "@src/components/forms/EventGeneric.svelte";
+import EventPlayer from "@src/components/forms/EventPlayer.svelte";
+import EventTeam from "@src/components/forms/EventTeam.svelte";
 
-import { db } from '@db/config';
-import '@src/styles/global.css';
-import { eq } from 'drizzle-orm';
-import { ticket } from '@db/schema';
-import { IsAcceptJson, IsCreateRessource, IsUpdateRessource } from '@src/lib/app/app';
-import Notification from '@src/components/forms/Notification.svelte';
-import { UpdateEvent } from '@src/lib/app/form/update';
+import { db } from "@db/config";
+import "@src/styles/global.css";
+import { eq } from "drizzle-orm";
+import { ticket } from "@db/schema";
+import {
+	IsAcceptJson,
+	IsCreateRessource,
+	IsUpdateRessource,
+} from "@src/lib/app/app";
+import Notification from "@src/components/forms/Notification.svelte";
+import { UpdateEvent } from "@src/lib/app/form/update";
 
 const { id } = Astro.params;
 if (!id) return new Response(null, { status: 400 });
 
-if (Astro.request.method === 'POST') {
+if (Astro.request.method === "POST") {
 	return await UpdateEvent(await Astro.request.formData(), id);
 }
 const isUpdate = IsUpdateRessource(Astro.url);
@@ -25,9 +29,13 @@ const isCreate = IsCreateRessource(Astro.url);
 
 const event = await GetEvent(id);
 if (!event) return new Response(null, { status: 404 });
+console.log(event);
 
 if (IsAcceptJson(Astro.request)) {
-	return new Response(JSON.stringify(event), { status: 200, headers: { 'Content-Type': 'application/json' } });
+	return new Response(JSON.stringify(event), {
+		status: 200,
+		headers: { "Content-Type": "application/json" },
+	});
 }
 
 // add one hour to the date to avoid the bug of the date picker
@@ -39,25 +47,59 @@ const ticketings = await db.query.ticketing.findMany();
 const championships = await db.query.championship.findMany();
 const teams = await db.query.team.findMany();
 const players = await db.query.player.findMany();
-const tickets = await db.query.ticket.findMany({ where: eq(ticket.eventId, event.id) });
+const tickets = await db.query.ticket.findMany({
+	where: eq(ticket.eventId, event.id),
+});
 ---
 
 <Main title="Evenement">
 	<!-- {isEventTeam(event) && <>EventTeam</>} -->
 	{
 		(isUpdate || isCreate) && (
-			<Notification title="Modification effectuée" description="Les modifications ont bien été prises en compte" />
+			<Notification
+				title="Modification effectuée"
+				description="Les modifications ont bien été prises en compte"
+			/>
 		)
 	}
 	{
 		isEventTeam(event) && (
-			<EventTeam client:load {sports} {championships} {teams} {locations} {ticketings} defaultValues={event} {tickets} />
+			<EventTeam
+				client:load
+				{sports}
+				{championships}
+				{teams}
+				{locations}
+				{ticketings}
+				defaultValues={event}
+				{tickets}
+			/>
 		)
 	}
 	{
 		isEventPlayer(event) && (
-			<EventPlayer client:load {sports} {championships} {players} {locations} {ticketings} defaultValues={event} {tickets} />
+			<EventPlayer
+				client:load
+				{sports}
+				{championships}
+				{players}
+				{locations}
+				{ticketings}
+				defaultValues={event}
+				{tickets}
+			/>
 		)
 	}
-	{isEventGeneric(event) && <EventGeneric client:load {sports} {locations} {ticketings} {tickets} defaultValues={event} />}
+	{
+		isEventGeneric(event) && (
+			<EventGeneric
+				client:load
+				{sports}
+				{locations}
+				{ticketings}
+				{tickets}
+				defaultValues={event}
+			/>
+		)
+	}
 </Main>
